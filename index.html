@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRY4ME</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(255,0,50,0.5);
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+        }
+        
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .links a {
+            display: block;
+            padding: 1rem 2rem;
+            border: 1px solid #333;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 0.1em;
+        }
+        
+        .links a:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+        
+        /* Встроенный аудиоплеер */
+        .player {
+            margin: 2rem 0;
+            width: 100%;
+        }
+        
+        audio {
+            width: 100%;
+            filter: grayscale(1);
+        }
+        
+        .track-name {
+            color: #888;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CRY4ME</h1>
+        <p class="subtitle">музыка для тех, кому не всё равно</p>
+        
+        <!-- Аудиоплеер (положи .mp3 файлы в папку music/) -->
+        <div class="player">
+            <p class="track-name">▶ название трека</p>
+            <audio controls preload="metadata">
+                <source src="music/track1.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        
+        <div class="links">
+            <a href="https://soundcloud.com/ТВОЙ_ПРОФИЛЬ">soundcloud</a>
+            <a href="https://t.me/ТВОЙ_КАНАЛ">telegram</a>
+            <a href="mailto:твоя@почта.com">связаться</a>
+        </div>
+    </div>
+</body>
+</html>
