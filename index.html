@@ -5,310 +5,310 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cry 4 me</title>
     <style>
-        /* Идеально гладкий шрифт и фон */
+        /* Базовые настройки: строгий черный фон и гладкая белая Гельветика */
         body {
             margin: 0;
             padding: 0;
+            background-color: #0a0a0a;
             color: #ffffff;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased; /* Убирает "пиксельность" шрифта */
+            -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            letter-spacing: 1.5px; /* Красивое расстояние между буквами */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        a {
+            color: #ffffff; 
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.6; 
+        }
+
+        /* Центрированный контейнер */
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 20px 50px 20px;
+            background-color: #121212; 
             min-height: 100vh;
-            background-color: #050505; /* Заглушка, пока не загрузится картинка */
-            position: relative;
-            overflow-x: hidden;
         }
 
-        /* ЗАМЫЛЕННЫЙ ФОН */
-        body::before {
-            content: "";
-            position: fixed;
-            top: -5%; 
-            left: -5%; 
-            width: 110%; 
-            height: 110%; /* Делаем чуть больше экрана, чтобы края размытия не обрезались */
-            background-image: url('bg1.jpg'); /* Сюда подтянется твоя картинка */
-            background-size: cover;
-            background-position: center;
-            filter: blur(25px) brightness(0.35); /* Сильное размытие и затемнение */
-            z-index: -1; /* Отправляем на самый задний план */
-        }
-
-        /* Шапка */
-        header {
+        /* Шапка / Баннер */
+        .header-banner {
             width: 100%;
-            max-width: 1000px; /* Сделали сайт шире */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 20px;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            letter-spacing: 4px; /* Еще больше расстояния для логотипа */
-            font-weight: 300; /* Более тонкий и стильный вес шрифта */
-            text-transform: lowercase;
-        }
-
-        /* Кнопка смены языка */
-        #lang-toggle {
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #fff;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-family: inherit;
-            letter-spacing: 2px;
-            transition: 0.4s ease;
-            font-size: 0.8rem;
-            border-radius: 3px;
-        }
-        
-        #lang-toggle:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        /* Основной контент */
-        main {
-            text-align: center;
-            margin-top: 40px;
-            width: 100%;
-            max-width: 1000px; /* Широкий контейнер для огромных обложек */
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        /* Социальные сети */
-        .socials {
-            margin-bottom: 50px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .socials a {
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            transition: color 0.4s ease;
-        }
-
-        .socials a:hover {
-            color: #fff;
-        }
-
-        /* Главные кнопки */
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 60px;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px); /* Эффект стекла для кнопок */
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 18px 40px;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: 0.4s ease;
-            letter-spacing: 2px;
-            border-radius: 3px;
-        }
-
-        .btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        /* ОГРОМНАЯ СЕТКА РЕЛИЗОВ */
-        .releases-grid {
-            display: none; /* Скрыта до клика */
-            grid-template-columns: repeat(2, 1fr); /* 2 огромные колонки на ПК */
-            gap: 40px; /* Большое расстояние между альбомами */
-            margin-bottom: 80px;
-        }
-
-        .releases-grid.active {
-            display: grid;
-        }
-
-        /* Карточка альбома */
-        .album {
-            aspect-ratio: 1 / 1;
-            background-color: rgba(0, 0, 0, 0.3); /* Полупрозрачный фон, если картинки нет */
+            height: 180px;
+            background-color: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            color: #fff;
-            position: relative;
             overflow: hidden;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Объемная тень */
+            margin-bottom: 20px;
         }
 
-        .album img {
+        .header-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 1; /* КАРТИНКА ЯРКАЯ ПО УМОЛЧАНИЮ */
-            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .album:hover img {
-            opacity: 0.3; /* ЗАТЕМНЯЕТСЯ ПРИ НАВЕДЕНИИ */
-            transform: scale(1.05); /* Легкое красивое увеличение при наведении */
+        /* Навигация под баннером */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #lang-toggle {
+            background: none;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            letter-spacing: 1px;
+            transition: 0.2s;
+        }
+
+        #lang-toggle:hover {
+            border-color: #fff;
+            background: #fff;
+            color: #000;
+        }
+
+        /* ДВЕ КОЛОНКИ */
+        .main-content {
+            display: flex;
+            gap: 40px;
+        }
+
+        .left-column {
+            flex: 1;
+        }
+
+        .right-column {
+            width: 260px;
+            flex-shrink: 0;
+        }
+
+        /* СЕТКА МУЗЫКИ */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .album-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .album-cover {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #1a1a1a;
+            border: 1px solid #222;
+            margin-bottom: 10px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .album-item:hover .album-cover {
+            transform: translateY(-5px);
+        }
+
+        .album-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .album-title {
-            z-index: 1;
-            font-size: 1.5rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            opacity: 0; /* ТЕКСТ СКРЫТ ПО УМОЛЧАНИЮ */
-            transition: opacity 0.5s ease;
-            text-align: center;
-            padding: 0 20px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
         }
 
-        .album:hover .album-title {
-            opacity: 1; /* ТЕКСТ ПОЯВЛЯЕТСЯ ПРИ НАВЕДЕНИИ */
+        .album-artist {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* САЙДБАР АРТИСТА */
+        .profile-pic {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #1a1a1a;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .artist-name {
+            margin: 0 0 5px 0;
+            font-size: 24px;
+            color: #fff;
+            letter-spacing: 2px;
+            font-weight: normal;
+        }
+
+        .location {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        /* Кнопка скачивания */
+        .download-btn {
+            display: block;
+            text-align: center;
+            background-color: #fff;
+            color: #000 !important;
+            font-weight: bold;
+            padding: 12px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #ccc;
+            opacity: 1;
+        }
+
+        /* Ссылки соцсетей */
+        .socials {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 13px; /* Вернул мелкий размер */
+            letter-spacing: 0.5px;
         }
 
         /* Мобильная адаптация */
         @media (max-width: 768px) {
-            .releases-grid {
-                grid-template-columns: 1fr; /* 1 ОГРОМНАЯ колонка на телефоне */
-                gap: 20px;
+            .main-content {
+                flex-direction: column-reverse;
             }
-            .actions {
+            .right-column {
+                width: 100%;
+                display: flex;
                 flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
-            h1 {
-                font-size: 1.8rem;
+            .profile-pic {
+                width: 180px;
+            }
+            .music-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>cry 4 me</h1>
-        <button id="lang-toggle">RU / EN</button>
-    </header>
-
-    <main>
-        <!-- Ссылки -->
-        <div class="socials">
-            <a href="https://open.spotify.com/artist/3YSO9ev7YtOt3eiqHyNYwW" target="_blank">Spotify</a>
-            <a href="https://soundcloud.com/cryforrme" target="_blank">SoundCloud</a>
-            <a href="https://t.me/mywristscryforme" target="_blank">Telegram</a>
-            <a href="mailto:info@cry4me.com">Email</a>
+    <div class="container">
+        
+        <div class="header-banner">
+            <img src="banner.jpg" alt="" onerror="this.style.display='none'">
         </div>
 
-        <!-- Кнопки действий -->
-        <div class="actions">
-            <button class="btn" id="btn-releases">Релизы</button>
-            <a href="discography.zip" class="btn" id="btn-download" download>Скачать всё</a>
-        </div>
+        <nav class="top-nav">
+            <div class="nav-links">
+                <span id="nav-music">music</span>
+            </div>
+            <button id="lang-toggle">RU / EN</button>
+        </nav>
 
-        <!-- Огромная сетка релизов -->
-        <div class="releases-grid" id="grid">
-            <a href="#" class="album">
-                <img src="cover1.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 1</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover2.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 2</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover3.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 3</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover4.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 4</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover5.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 5</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover6.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 6</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover7.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 7</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover8.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 8</span>
-            </a>
-            <a href="#" class="album">
-                <img src="cover9.jpg" alt="" onerror="this.style.display='none'">
-                <span class="album-title">Album 9</span>
-            </a>
+        <div class="main-content">
+            
+            <div class="left-column">
+                <div class="music-grid">
+                    
+                    <!-- АЛЬБОМ 1 -->
+                    <div class="album-item">
+                        <a href="#">
+                            <div class="album-cover"><img src="cover1.jpg" alt="" onerror="this.style.display='none'"></div>
+                            <div class="album-title">Album 1</div>
+                            <div class="album-artist">cry 4 me</div>
+                        </a>
+                    </div>
+                    
+                    <!-- АЛЬБОМ 2 -->
+                    <div class="album-item">
+                        <a href="#">
+                            <div class="album-cover"><img src="cover2.jpg" alt="" onerror="this.style.display='none'"></div>
+                            <div class="album-title">Album 2</div>
+                            <div class="album-artist">cry 4 me</div>
+                        </a>
+                    </div>
+
+                    <!-- АЛЬБОМ 3 -->
+                    <div class="album-item">
+                        <a href="#">
+                            <div class="album-cover"><img src="cover3.jpg" alt="" onerror="this.style.display='none'"></div>
+                            <div class="album-title">Album 3</div>
+                            <div class="album-artist">cry 4 me</div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="right-column">
+                <img src="profile.jpg" alt="cry 4 me" class="profile-pic" onerror="this.style.display='none'">
+                
+                <h1 class="artist-name">cry 4 me</h1>
+                <div class="location" id="text-location">Worldwide</div>
+
+                <a href="discography.zip" class="download-btn" id="btn-download" download>Download Discography</a>
+
+                <div class="socials">
+                    <a href="https://open.spotify.com/artist/3YSO9ev7YtOt3eiqHyNYwW" target="_blank">spotify</a>
+                    <a href="https://soundcloud.com/cryforrme" target="_blank">soundcloud</a>
+                    <a href="https://t.me/mywristscryforme" target="_blank">telegram</a>
+                    <a href="mailto:info@cry4me.com">info@cry4me.com</a>
+                </div>
+            </div>
+
         </div>
-    </main>
+    </div>
 
     <script>
-        // ЛОГИКА ОТКРЫТИЯ РЕЛИЗОВ
-        const btnReleases = document.getElementById('btn-releases');
-        const grid = document.getElementById('grid');
-
-        btnReleases.addEventListener('click', () => {
-            grid.classList.toggle('active');
-            
-            // Если сетка открылась, плавно скроллим вниз к альбомам
-            if(grid.classList.contains('active')) {
-                setTimeout(() => {
-                    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-        });
-
-        // ЛОГИКА СМЕНЫ ЯЗЫКА
-        let currentLang = 'ru';
+        let currentLang = 'en'; 
         const langToggle = document.getElementById('lang-toggle');
+        const navMusic = document.getElementById('nav-music');
+        const textLocation = document.getElementById('text-location');
         const btnDownload = document.getElementById('btn-download');
 
         const dict = {
-            ru: {
-                releases: "РЕЛИЗЫ",
-                download: "СКАЧАТЬ ВСЁ"
-            },
-            en: {
-                releases: "RELEASES",
-                download: "DOWNLOAD ALL"
-            }
+            ru: { music: "музыка", location: "Весь мир", download: "Скачать дискографию" },
+            en: { music: "music", location: "Worldwide", download: "Download Discography" }
         };
 
         langToggle.addEventListener('click', () => {
-            currentLang = currentLang === 'ru' ? 'en' : 'ru';
-            
-            btnReleases.innerText = dict[currentLang].releases;
+            currentLang = currentLang === 'en' ? 'ru' : 'en';
+            navMusic.innerText = dict[currentLang].music;
+            textLocation.innerText = dict[currentLang].location;
             btnDownload.innerText = dict[currentLang].download;
         });
     </script>
