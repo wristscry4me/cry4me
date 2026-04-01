@@ -9,13 +9,13 @@
         :root {
             --bg-color: #ffffff;
             --text-color: #000000;
-            --line-color: rgba(0, 0, 0, 0.15);
+            --line-color: rgba(0, 0, 0, 0.2);
         }
 
         body.dark-mode {
             --bg-color: #0c0c0c;
             --text-color: #ffffff; 
-            --line-color: rgba(255, 255, 255, 0.15);
+            --line-color: rgba(255, 255, 255, 0.2);
         }
 
         body {
@@ -44,7 +44,7 @@
             opacity: 0.5;
         }
 
-        /* ЭКРАН ЗАГРУЗКИ (PRELOADER) */
+        /* ЭКРАН ЗАГРУЗКИ */
         #preloader {
             position: fixed;
             top: 0;
@@ -137,12 +137,13 @@
             transform: translateX(12px);
         }
 
+        /* НОВАЯ ПОЛОСА-УКАЗАТЕЛЬ (не касается текста) */
         .catalog-item.active::after {
             content: '';
             position: absolute;
-            left: -20px;
+            left: calc(100% + 15px); /* Начинается на 15px правее текста */
             top: 50%;
-            width: 100vw;
+            width: 40px; /* Короткая аккуратная линия */
             height: 1px;
             background-color: var(--line-color);
             z-index: -1;
@@ -153,15 +154,15 @@
         #default-view {
             position: fixed;
             top: 50%;
-            left: 60%; 
+            left: 55%; 
             transform: translate(-50%, -50%);
             display: flex;
             align-items: center; 
-            gap: 20px; 
+            gap: 50px; 
             z-index: 30;
         }
 
-        /* ПРЯМОУГОЛЬНИК ИЗ ТЕКСТА (Вопросы) */
+        /* ПРЯМОУГОЛЬНИК ИЗ ВОПРОСОВ */
         #typing-container {
             width: 80px; 
             flex-shrink: 0;
@@ -175,19 +176,17 @@
             text-align: left; 
         }
 
-        /* ASCII АРТ С ГЛИТЧ-АНИМАЦИЕЙ */
+        /* НОВЫЙ ASCII АРТ */
         #ascii-art {
             font-family: 'Courier New', Courier, monospace; 
             white-space: pre; 
-            /* Сделал шрифт еще мельче, так как арт очень широкий */
-            font-size: 4px; 
+            font-size: 4px; /* Подогнал под пропорции нового рисунка */
             line-height: 4.5px;
             letter-spacing: 0;
             color: var(--text-color);
             opacity: 0; 
         }
 
-        /* Анимация моргания при появлении */
         @keyframes glitchAppear {
             0% { opacity: 0; }
             10% { opacity: 0.8; }
@@ -206,8 +205,8 @@
         /* БЛОК ПОКАЗА АЛЬБОМА */
         #display-area {
             position: fixed;
-            left: 300px;
-            width: calc(100% - 350px);
+            left: 320px;
+            width: calc(100% - 370px);
             display: none;
             z-index: 40;
         }
@@ -228,9 +227,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ОБЛОЖКА */
         .album-cover {
             width: 400px;
-            aspect-ratio: 1 / 1;
+            height: 400px; /* Жестко фиксируем высоту */
             background-color: var(--line-color);
             flex-shrink: 0;
         }
@@ -241,15 +241,18 @@
             object-fit: cover;
         }
 
+        /* ИНФОРМАЦИЯ (Разделена на верх и низ для BandLink) */
         .album-info {
             display: flex;
             flex-direction: column;
-            gap: 15px; 
+            justify-content: space-between; /* Раскидывает контент вверх и вниз */
+            height: 400px; /* Высота равна высоте обложки */
             max-width: 400px;
-            padding-top: 2px;
+            padding: 2px 0;
+            box-sizing: border-box;
         }
 
-        .info-block p {
+        .info-top p {
             margin: 0 0 3px 0; 
             line-height: 1.2; 
         }
@@ -264,12 +267,50 @@
         .links {
             display: flex;
             gap: 15px;
-            margin-top: 5px;
+            margin-top: 10px;
         }
 
         .links a {
             border-bottom: 1px solid var(--text-color);
             padding-bottom: 1px;
+        }
+
+        /* АУДИО ПЛЕЕР */
+        .audio-player {
+            width: 100%;
+            height: 30px;
+            margin-top: 20px;
+            outline: none;
+            /* Стилизация плеера под эстетику сайта */
+            filter: grayscale(100%) contrast(1.2);
+        }
+
+        /* В темной теме плеер инвертируется, чтобы не быть белым пятном */
+        body.dark-mode .audio-player {
+            filter: invert(1) hue-rotate(180deg) grayscale(100%) contrast(1.2);
+        }
+
+        /* BANDLINK ИКОНКА (Внизу) */
+        .info-bottom {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .bandlink-btn {
+            display: block;
+            border: none;
+            transition: opacity 0.3s;
+        }
+
+        .bandlink-btn img {
+            height: 25px; /* Размер иконки */
+            width: auto;
+            display: block;
+            filter: grayscale(100%);
+        }
+
+        body.dark-mode .bandlink-btn img {
+            filter: invert(1) grayscale(100%); /* Белая иконка в темной теме */
         }
 
         /* СОЦСЕТИ */
@@ -309,7 +350,7 @@
                 margin-bottom: 20px;
             }
             #ascii-art {
-                font-size: 1.5px; /* Для телефона нужен нано-шрифт, чтобы влезло */
+                font-size: 1.5px; 
                 line-height: 1.5px;
             }
             #display-area {
@@ -323,7 +364,13 @@
             }
             .album-cover {
                 width: 100%;
+                height: auto;
+                aspect-ratio: 1/1;
                 max-width: 400px;
+            }
+            .album-info {
+                height: auto; /* На телефоне высота свободная */
+                gap: 40px; /* Отступ до бандлинка на телефоне */
             }
             #footer-info {
                 position: static;
@@ -335,12 +382,10 @@
 </head>
 <body>
 
-    <!-- ЭКРАН ЗАГРУЗКИ -->
     <div id="preloader">
         <span class="preloader-text">www.cry4me.com</span>
     </div>
 
-    <!-- ЛОГОТИП -->
     <a href="#" id="logo-container">
         <img src="logo.png" alt="logo" onerror="this.style.display='none'">
     </a>
@@ -355,7 +400,6 @@
         <p><a href="mailto:info@cry4me.com">INFO@CRY4ME.COM</a></p>
     </div>
 
-    <!-- МЕНЮ КАТАЛОГА -->
     <nav id="catalog-list">
         <div class="catalog-item" data-target="album-1">cachalot remix</div>
         <div class="catalog-item" data-target="album-2">antistressworldwide</div>
@@ -372,13 +416,10 @@
         <div class="catalog-item" data-target="album-13">ピンクのブレスレット</div>
     </nav>
 
-    <!-- СТАРТОВЫЙ ЭКРАН (Текст слева + Новый широкий ASCII Арт) -->
+    <!-- СТАРТОВЫЙ ЭКРАН -->
     <div id="default-view">
         <div id="typing-container"></div>
         <div id="ascii-art">                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            
@@ -490,77 +531,211 @@
                                                                               ..                           ::.::                                                                                                                                           
                                                                                 -   :--.                      :- ::                                                                                                                                        
                                                                                            ::...                 :                                                                                                                                         
-                                                                                                                   .                                                                                                                                       
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           </div>
+                                                                                                                   .                                                                                                                                       </div>
     </div>
 
     <!-- КОНТЕНТ АЛЬБОМОВ -->
     <div id="display-area">
         
+        <!-- АЛЬБОМ 1 (С плеером) -->
         <div class="album-content" id="album-1">
             <div class="album-cover"><img src="cover1.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <!-- АУДИО ПЛЕЕР -->
+                    <audio controls class="audio-player" preload="none">
+                        <source src="track1.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+                <div class="info-bottom">
+                    <!-- ИКОНКА BANDLINK -->
+                    <a href="#" target="_blank" class="bandlink-btn">
+                        <img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'">
+                    </a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 2 -->
         <div class="album-content" id="album-2">
             <div class="album-cover"><img src="cover2.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">ANTISTRESSWORLDWIDE</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">ANTISTRESSWORLDWIDE</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track2.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 3 -->
         <div class="album-content" id="album-3">
             <div class="album-cover"><img src="cover3.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">SELFHARMANGEL</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">SELFHARMANGEL</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track3.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 4 -->
         <div class="album-content" id="album-4">
             <div class="album-cover"><img src="cover4.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">FCK EVERYTHING</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">FCK EVERYTHING</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track4.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 5 -->
         <div class="album-content" id="album-5">
             <div class="album-cover"><img src="cover5.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">THE SEVEN WORKS OF MERCY</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">THE SEVEN WORKS OF MERCY</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track5.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 6 -->
         <div class="album-content" id="album-6">
             <div class="album-cover"><img src="cover6.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">ВСЕ БУДЕТ ХОРОШО</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">ВСЕ БУДЕТ ХОРОШО</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track6.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 7 -->
         <div class="album-content" id="album-7">
             <div class="album-cover"><img src="cover7.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">SERAPHIM</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">SERAPHIM</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track7.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 8 -->
         <div class="album-content" id="album-8">
             <div class="album-cover"><img src="cover8.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">NOTYOURS</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">NOTYOURS</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track8.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 9 -->
         <div class="album-content" id="album-9">
             <div class="album-cover"><img src="cover9.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">BLOODYRING</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">BLOODYRING</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track9.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 10 (Без плеера, т.к. альбом) -->
         <div class="album-content" id="album-10">
             <div class="album-cover"><img src="cover10.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <!-- Тут плеера нет -->
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 11 -->
         <div class="album-content" id="album-11">
             <div class="album-cover"><img src="cover11.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">SHARPEST PEARL</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">SHARPEST PEARL</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track11.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 12 -->
         <div class="album-content" id="album-12">
             <div class="album-cover"><img src="cover12.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">FORGIVE ME</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">FORGIVE ME</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <audio controls class="audio-player" preload="none"><source src="track12.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
+        <!-- АЛЬБОМ 13 (Без плеера, т.к. альбом) -->
         <div class="album-content" id="album-13">
             <div class="album-cover"><img src="cover13.jpg" alt=""></div>
-            <div class="album-info"><div class="info-block"><p class="info-title">ピンクのブレスレット</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">ピンクのブレスレット</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="discography.zip" download>Download</a></div>
+                    <!-- Тут плеера нет -->
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" class="bandlink-btn"><img src="bandlink.png" alt="BandLink" onerror="this.style.display='none'"></a>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -589,7 +764,7 @@
                 
                 setTimeout(() => {
                     if(!isTyped) startTyping();
-                    triggerAsciiAnimation(); // Запускаем глитч арта
+                    triggerAsciiAnimation(); 
                 }, 500);
             }, 2000);
         });
@@ -603,7 +778,7 @@
                 if (typeIndex < textToType.length) {
                     typingContainer.innerHTML += textToType.charAt(typeIndex);
                     typeIndex++;
-                    setTimeout(typeNext, 10); // Скорость печати
+                    setTimeout(typeNext, 10); 
                 }
             }
             typeNext();
@@ -621,6 +796,7 @@
         const displayArea = document.getElementById('display-area');
         const defaultView = document.getElementById('default-view');
         const logo = document.getElementById('logo-container');
+        const audioPlayers = document.querySelectorAll('audio');
 
         // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
@@ -664,7 +840,7 @@
             
             if (defaultView) {
                 defaultView.style.display = 'flex'; 
-                triggerAsciiAnimation(); // Снова запускаем глитч
+                triggerAsciiAnimation(); 
             }
         });
     </script>
