@@ -461,8 +461,7 @@
     <div id="default-view">
         <div id="typing-container"></div>
         <div id="ascii-wrapper">
-            <div id="ascii-art">                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
+            <div id="ascii-art">
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            
@@ -804,7 +803,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -856,12 +854,34 @@
             asciiArt.classList.add('show-art');
         }
 
-        // ЛОГИКА ИНТЕРФЕЙСА
+        // ЛОГИКА ИНТЕРФЕЙСА И УПРАВЛЕНИЯ АУДИО
         const catalogItems = document.querySelectorAll('.catalog-item');
         const albumContents = document.querySelectorAll('.album-content');
         const displayArea = document.getElementById('display-area');
         const defaultView = document.getElementById('default-view');
         const logo = document.getElementById('logo-container');
+        
+        // Находим все аудиоплееры
+        const audioPlayers = document.querySelectorAll('.audio-player');
+
+        // Фишка 1: Если включаем один трек, все остальные ставятся на паузу
+        audioPlayers.forEach(player => {
+            player.addEventListener('play', (e) => {
+                audioPlayers.forEach(otherPlayer => {
+                    if (otherPlayer !== e.target) {
+                        otherPlayer.pause();
+                    }
+                });
+            });
+        });
+
+        // Функция для остановки ВСЕХ треков и перемотки в начало
+        function stopAllAudio() {
+            audioPlayers.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0; 
+            });
+        }
 
         // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
@@ -870,6 +890,9 @@
                 if (defaultView) {
                     defaultView.style.display = 'none';
                 }
+
+                // Фишка 2: Выключаем трек при переключении на другой альбом
+                stopAllAudio();
 
                 catalogItems.forEach(i => i.classList.remove('active'));
                 albumContents.forEach(c => c.classList.remove('active'));
@@ -905,6 +928,9 @@
         logo.addEventListener('click', (e) => {
             e.preventDefault(); 
             
+            // Фишка 3: Выключаем трек при возврате на главную страницу с ASCII-артом
+            stopAllAudio();
+
             displayArea.style.display = 'none';
             catalogItems.forEach(i => i.classList.remove('active'));
             albumContents.forEach(c => c.classList.remove('active'));
