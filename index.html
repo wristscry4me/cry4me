@@ -30,6 +30,7 @@
             text-transform: uppercase;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: none; /* Запрещает айфонам ломать мелкий шрифт */
             transition: background-color 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
         }
@@ -120,7 +121,7 @@
             z-index: 50;
             height: calc(100vh - 200px);
             overflow-y: auto;
-            padding-right: 20px;
+            padding-right: 120px; /* Отступ, чтобы длинная полоска не обрезалась */
             padding-bottom: 300px; 
         }
 
@@ -138,13 +139,13 @@
             transform: translateX(12px);
         }
 
-        /* ПОЛОСА-УКАЗАТЕЛЬ */
+        /* ПОЛОСА-УКАЗАТЕЛЬ (Сделали длиннее) */
         .catalog-item.active::after {
             content: '';
             position: absolute;
             left: calc(100% + 15px); 
             top: 50%;
-            width: 100vw; 
+            width: 80px; /* Идеальная длина */
             height: 1px;
             background-color: var(--line-color);
             z-index: -1;
@@ -175,6 +176,14 @@
             white-space: normal;
             opacity: 0.4; 
             text-align: left; 
+        }
+
+        /* КОНТЕЙНЕР ДЛЯ ASCII (Нужен для правильного масштаба на телефонах) */
+        #ascii-wrapper {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: flex-start;
         }
 
         /* ASCII АРТ */
@@ -292,7 +301,7 @@
             filter: invert(1) hue-rotate(180deg) grayscale(100%) contrast(1.2);
         }
 
-        /* БЛОК ИКОНОК ПЛАТФОРМ (Внизу) */
+        /* БЛОК ИКОНОК ПЛАТФОРМ */
         .info-bottom {
             display: flex;
             align-items: flex-end;
@@ -314,14 +323,14 @@
             height: 12px; 
             width: auto;
             display: block;
-            /* МАГИЯ CSS: Убивает любой цвет, делает картинку 100% черной и слегка прозрачной */
-            filter: brightness(0) opacity(0.8);
+            /* Обесцвечиваем картинки (черно-белые), но НЕ закрашиваем их полностью */
+            filter: grayscale(100%);
             transition: filter 0.4s;
         }
 
-        /* Инверсия цветных картинок в чисто белые в темной теме */
+        /* В темной теме они инвертируются, чтобы их было видно */
         body.dark-mode .platform-btn img {
-            filter: brightness(0) invert(1) opacity(0.8); 
+            filter: grayscale(100%) invert(1); 
         }
 
         /* СОЦСЕТИ */
@@ -334,16 +343,27 @@
             z-index: 100;
         }
 
-        /* МОБИЛЬНАЯ ВЕРСИЯ */
+        /* МОБИЛЬНАЯ ВЕРСИЯ (Глубокая проработка) */
         @media (max-width: 900px) {
             #preloader { display: none; }
+            
+            /* Лого и кнопка больше не плавают, а закреплены за верхом страницы */
+            #logo-container {
+                position: absolute;
+            }
+            #theme-toggle {
+                position: absolute;
+            }
+
             #catalog-list {
                 position: static;
                 height: auto;
                 padding: 100px 30px 30px 30px;
                 gap: 20px;
             }
-            .catalog-item.active::after { display: none; }
+            
+            .catalog-item.active::after { display: none; } /* На телефоне полоски не нужны */
+            
             #default-view {
                 position: static;
                 transform: none;
@@ -354,35 +374,51 @@
                 padding: 0 30px;
                 box-sizing: border-box;
             }
+            
             #typing-container {
                 width: 100%;
                 height: auto;
                 word-break: normal; 
                 margin-bottom: 20px;
             }
-            #ascii-art {
-                font-size: 1.5px; 
-                line-height: 1.5px;
+
+            /* Хак для айфонов: арт масштабируется, чтобы обойти блокировку мелких шрифтов */
+            #ascii-wrapper {
+                width: 100%;
+                overflow: hidden;
             }
+            
+            #ascii-art {
+                font-size: 10px; 
+                line-height: 11px;
+                transform: scale(0.2); /* Уменьшаем в 5 раз визуально */
+                transform-origin: top left;
+                width: 500%; /* Компенсируем масштаб */
+            }
+
             #display-area {
                 position: static !important;
                 width: 100%;
                 padding: 0 30px 50px 30px;
                 box-sizing: border-box;
             }
+            
             .album-content.active {
                 flex-direction: column;
             }
+            
             .album-cover {
                 width: 100%;
                 height: auto;
                 aspect-ratio: 1/1;
                 max-width: 400px;
             }
+            
             .album-info {
                 height: auto; 
                 gap: 40px; 
             }
+            
             #footer-info {
                 position: static;
                 text-align: left;
@@ -430,7 +466,8 @@
     <!-- СТАРТОВЫЙ ЭКРАН -->
     <div id="default-view">
         <div id="typing-container"></div>
-        <div id="ascii-art">                                                                                                                                                                                                                                                           
+        <div id="ascii-wrapper">
+            <div id="ascii-art">                                                                                                                                                                                                                                                           
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            
@@ -548,6 +585,7 @@
                                                                                                                    .                                                                                                                                       
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            </div>
+        </div>
     </div>
 
     <!-- КОНТЕНТ АЛЬБОМОВ -->
@@ -631,7 +669,7 @@
                     <audio controls class="audio-player" preload="none"><source src="track5.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
-                    <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://bnd.lc/cfmswm" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
                     <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
                     <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
@@ -699,7 +737,7 @@
                     <audio controls class="audio-player" preload="none"><source src="track9.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
-                    <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://bnd.lc/cfmbr" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
                     <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
                     <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
@@ -829,6 +867,7 @@
         const displayArea = document.getElementById('display-area');
         const defaultView = document.getElementById('default-view');
         const logo = document.getElementById('logo-container');
+        const audioPlayers = document.querySelectorAll('audio');
 
         // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
@@ -849,6 +888,14 @@
                 displayArea.style.display = 'block';
                 targetAlbum.classList.add('active');
 
+                // Скролл вниз к альбому на мобильной версии
+                if(window.innerWidth <= 900) {
+                    setTimeout(() => {
+                        displayArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+
+                // Выравнивание для ПК
                 if(window.innerWidth > 900) {
                     const rect = item.getBoundingClientRect();
                     let calculatedTop = rect.top;
