@@ -1,134 +1,163 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cry 4 me</title>
+    <title>cry 4 me | catalog</title>
     <style>
-        /* Базовые настройки: строгий черный фон и гладкая белая Гельветика */
+        /* ПЕРЕМЕННЫЕ ДЛЯ ТЕМ */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --line-color: rgba(0, 0, 0, 0.15);
+        }
+
+        /* ТЕМНАЯ ТЕМА */
+        body.dark-mode {
+            --bg-color: #0c0c0c;
+            --text-color: #ffffff; /* Строго 100% белый */
+            --line-color: rgba(255, 255, 255, 0.15);
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background-color: #0a0a0a;
-            color: #ffffff;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            /* Ультра-тонкий шрифт */
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 100; 
+            font-size: 10px; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            font-size: 14px;
-            letter-spacing: 0.5px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
         }
 
         a {
-            color: #ffffff; 
+            color: var(--text-color);
             text-decoration: none;
             transition: opacity 0.2s;
         }
 
         a:hover {
-            opacity: 0.6; 
+            opacity: 0.5;
         }
 
-        /* Центрированный контейнер */
-        .container {
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 0 20px 50px 20px;
-            background-color: #121212; 
-            min-height: 100vh;
+        /* ЛОГОТИП */
+        #logo-container {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 40px;
+            height: 40px;
+            z-index: 100;
         }
 
-        /* Шапка / Баннер */
-        .header-banner {
-            width: 100%;
-            height: 180px;
-            background-color: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .header-banner img {
+        #logo-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            transition: filter 0.4s;
         }
 
-        /* Навигация под баннером */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            text-transform: uppercase;
+        body.dark-mode #logo-container img {
+            filter: invert(1); 
+        }
+
+        /* КНОПКА ТЕМЫ */
+        #theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 9px;
+            font-weight: 100;
+            cursor: pointer;
+            z-index: 100;
             letter-spacing: 2px;
         }
 
-        .nav-links {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        #lang-toggle {
-            background: none;
-            border: 1px solid #555;
-            color: #fff;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 11px;
-            letter-spacing: 1px;
-            transition: 0.2s;
-        }
-
-        #lang-toggle:hover {
-            border-color: #fff;
-            background: #fff;
-            color: #000;
-        }
-
-        /* ДВЕ КОЛОНКИ */
-        .main-content {
-            display: flex;
-            gap: 40px;
-        }
-
-        .left-column {
-            flex: 1;
-        }
-
-        .right-column {
-            width: 260px;
-            flex-shrink: 0;
-        }
-
-        /* СЕТКА МУЗЫКИ */
-        .music-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .album-item {
+        /* ЛЕВОЕ МЕНЮ КАТАЛОГА */
+        #catalog-list {
+            position: fixed;
+            top: 150px;
+            left: 30px;
             display: flex;
             flex-direction: column;
+            gap: 28px; 
+            z-index: 50;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding-right: 20px;
+            padding-bottom: 300px; 
+        }
+
+        #catalog-list::-webkit-scrollbar { display: none; }
+
+        .catalog-item {
+            cursor: pointer;
+            color: var(--text-color); /* Всегда чистый цвет (черный или белый) */
+            opacity: 1; /* Убрал прозрачность, теперь текст яркий и четкий */
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .catalog-item:hover {
+            transform: translateX(12px);
+        }
+
+        .catalog-item.active {
+            transform: translateX(12px);
+        }
+
+        .catalog-item.active::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            width: 100vw;
+            height: 1px;
+            background-color: var(--line-color);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* БЛОК ПОКАЗА АЛЬБОМА */
+        #display-area {
+            position: fixed;
+            left: 300px;
+            width: calc(100% - 350px);
+            display: none;
+            z-index: 40;
+        }
+
+        .album-content {
+            display: none;
+            align-items: flex-start;
+            gap: 30px; 
+        }
+
+        .album-content.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .album-cover {
-            width: 100%;
+            width: 400px;
             aspect-ratio: 1 / 1;
-            background-color: #1a1a1a;
-            border: 1px solid #222;
-            margin-bottom: 10px;
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-
-        .album-item:hover .album-cover {
-            transform: translateY(-5px);
+            background-color: var(--line-color);
+            flex-shrink: 0;
         }
 
         .album-cover img {
@@ -137,179 +166,220 @@
             object-fit: cover;
         }
 
-        .album-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-
-        .album-artist {
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* САЙДБАР АРТИСТА */
-        .profile-pic {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background-color: #1a1a1a;
-            margin-bottom: 15px;
-            object-fit: cover;
-        }
-
-        .artist-name {
-            margin: 0 0 5px 0;
-            font-size: 24px;
-            color: #fff;
-            letter-spacing: 2px;
-            font-weight: normal;
-        }
-
-        .location {
-            color: #888;
-            font-size: 12px;
-            margin-bottom: 25px;
-            letter-spacing: 1px;
-        }
-
-        /* Кнопка скачивания */
-        .download-btn {
-            display: block;
-            text-align: center;
-            background-color: #fff;
-            color: #000 !important;
-            font-weight: bold;
-            padding: 12px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 12px;
-            transition: 0.3s;
-        }
-
-        .download-btn:hover {
-            background-color: #ccc;
-            opacity: 1;
-        }
-
-        /* Ссылки соцсетей */
-        .socials {
+        /* Информация справа */
+        .album-info {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            font-size: 13px; /* Вернул мелкий размер */
-            letter-spacing: 0.5px;
+            gap: 15px; 
+            max-width: 400px;
+            padding-top: 2px;
         }
 
-        /* Мобильная адаптация */
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column-reverse;
+        .info-block p {
+            margin: 0 0 3px 0; 
+            line-height: 1.2; 
+        }
+
+        .info-title {
+            font-size: 11px;
+            font-weight: 300; 
+            margin-bottom: 8px !important; 
+            letter-spacing: 2px;
+        }
+
+        .links {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .links a {
+            border-bottom: 1px solid var(--text-color);
+            padding-bottom: 1px;
+        }
+
+        /* СОЦСЕТИ */
+        #footer-info {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            text-align: right;
+            line-height: 1.6;
+            z-index: 100;
+        }
+
+        /* МОБИЛЬНАЯ ВЕРСИЯ */
+        @media (max-width: 900px) {
+            #catalog-list {
+                position: static;
+                height: auto;
+                padding: 100px 30px 30px 30px;
+                gap: 20px;
             }
-            .right-column {
+            .catalog-item.active::after { display: none; }
+            #display-area {
+                position: static !important;
                 width: 100%;
-                display: flex;
+                padding: 0 30px 50px 30px;
+                box-sizing: border-box;
+            }
+            .album-content.active {
                 flex-direction: column;
-                align-items: center;
-                text-align: center;
             }
-            .profile-pic {
-                width: 180px;
+            .album-cover {
+                width: 100%;
+                max-width: 400px;
             }
-            .music-grid {
-                grid-template-columns: repeat(2, 1fr);
+            #footer-info {
+                position: static;
+                text-align: left;
+                padding: 30px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <a href="#" id="logo-container">
+        <img src="logo.png" alt="logo" onerror="this.style.display='none'">
+    </a>
+
+    <button id="theme-toggle">LIGHT / DARK</button>
+
+    <div id="footer-info">
+        <p>CRY 4 ME ALL RIGHTS RESERVED.</p>
+        <p><a href="https://open.spotify.com/artist/3YSO9ev7YtOt3eiqHyNYwW" target="_blank">SPOTIFY</a></p>
+        <p><a href="https://soundcloud.com/cryforrme" target="_blank">SOUNDCLOUD</a></p>
+        <p><a href="https://t.me/mywristscryforme" target="_blank">TELEGRAM</a></p>
+        <p><a href="mailto:info@cry4me.com">INFO@CRY4ME.COM</a></p>
+    </div>
+
+    <!-- МЕНЮ КАТАЛОГА -->
+    <nav id="catalog-list">
+        <div class="catalog-item" data-target="album-1">cachalot remix</div>
+        <div class="catalog-item" data-target="album-2">antistressworldwide</div>
+        <div class="catalog-item" data-target="album-3">selfharmangel</div>
+        <div class="catalog-item" data-target="album-4">fck everything</div>
+        <div class="catalog-item" data-target="album-5">The Seven Works of Mercy</div>
+        <div class="catalog-item" data-target="album-6">все будет хорошо</div>
+        <div class="catalog-item" data-target="album-7">Seraphim</div>
+        <div class="catalog-item" data-target="album-8">notyours</div>
+        <div class="catalog-item" data-target="album-9">bloodyring</div>
+        <div class="catalog-item" data-target="album-10">my wrists cry for me</div>
+        <div class="catalog-item" data-target="album-11">sharpest pearl</div>
+        <div class="catalog-item" data-target="album-12">forgive me</div>
+        <div class="catalog-item" data-target="album-13">ピンクのブレスレット</div>
+    </nav>
+
+    <!-- КОНТЕНТ -->
+    <div id="display-area">
         
-        <div class="header-banner">
-            <img src="banner.jpg" alt="" onerror="this.style.display='none'">
+        <div class="album-content" id="album-1">
+            <div class="album-cover"><img src="cover1.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
         </div>
 
-        <nav class="top-nav">
-            <div class="nav-links">
-                <span id="nav-music">music</span>
-            </div>
-            <button id="lang-toggle">RU / EN</button>
-        </nav>
-
-        <div class="main-content">
-            
-            <div class="left-column">
-                <div class="music-grid">
-                    
-                    <!-- АЛЬБОМ 1 -->
-                    <div class="album-item">
-                        <a href="#">
-                            <div class="album-cover"><img src="cover1.jpg" alt="" onerror="this.style.display='none'"></div>
-                            <div class="album-title">Album 1</div>
-                            <div class="album-artist">cry 4 me</div>
-                        </a>
-                    </div>
-                    
-                    <!-- АЛЬБОМ 2 -->
-                    <div class="album-item">
-                        <a href="#">
-                            <div class="album-cover"><img src="cover2.jpg" alt="" onerror="this.style.display='none'"></div>
-                            <div class="album-title">Album 2</div>
-                            <div class="album-artist">cry 4 me</div>
-                        </a>
-                    </div>
-
-                    <!-- АЛЬБОМ 3 -->
-                    <div class="album-item">
-                        <a href="#">
-                            <div class="album-cover"><img src="cover3.jpg" alt="" onerror="this.style.display='none'"></div>
-                            <div class="album-title">Album 3</div>
-                            <div class="album-artist">cry 4 me</div>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="right-column">
-                <img src="profile.jpg" alt="cry 4 me" class="profile-pic" onerror="this.style.display='none'">
-                
-                <h1 class="artist-name">cry 4 me</h1>
-                <div class="location" id="text-location">Worldwide</div>
-
-                <a href="discography.zip" class="download-btn" id="btn-download" download>Download Discography</a>
-
-                <div class="socials">
-                    <a href="https://open.spotify.com/artist/3YSO9ev7YtOt3eiqHyNYwW" target="_blank">spotify</a>
-                    <a href="https://soundcloud.com/cryforrme" target="_blank">soundcloud</a>
-                    <a href="https://t.me/mywristscryforme" target="_blank">telegram</a>
-                    <a href="mailto:info@cry4me.com">info@cry4me.com</a>
-                </div>
-            </div>
-
+        <div class="album-content" id="album-2">
+            <div class="album-cover"><img src="cover2.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">ANTISTRESSWORLDWIDE</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
         </div>
+
+        <div class="album-content" id="album-3">
+            <div class="album-cover"><img src="cover3.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">SELFHARMANGEL</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-4">
+            <div class="album-cover"><img src="cover4.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">FCK EVERYTHING</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-5">
+            <div class="album-cover"><img src="cover5.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">THE SEVEN WORKS OF MERCY</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-6">
+            <div class="album-cover"><img src="cover6.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">ВСЕ БУДЕТ ХОРОШО</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-7">
+            <div class="album-cover"><img src="cover7.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">SERAPHIM</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-8">
+            <div class="album-cover"><img src="cover8.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">NOTYOURS</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-9">
+            <div class="album-cover"><img src="cover9.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">BLOODYRING</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-10">
+            <div class="album-cover"><img src="cover10.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-11">
+            <div class="album-cover"><img src="cover11.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">SHARPEST PEARL</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-12">
+            <div class="album-cover"><img src="cover12.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">FORGIVE ME</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
+        <div class="album-content" id="album-13">
+            <div class="album-cover"><img src="cover13.jpg" alt=""></div>
+            <div class="album-info"><div class="info-block"><p class="info-title">ピンクのブレスレット</p><p>Written & Produced by cry 4 me</p></div><div class="links"><a href="discography.zip" download>Download</a></div></div>
+        </div>
+
     </div>
 
     <script>
-        let currentLang = 'en'; 
-        const langToggle = document.getElementById('lang-toggle');
-        const navMusic = document.getElementById('nav-music');
-        const textLocation = document.getElementById('text-location');
-        const btnDownload = document.getElementById('btn-download');
+        // СМЕНА ТЕМЫ
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
 
-        const dict = {
-            ru: { music: "музыка", location: "Весь мир", download: "Скачать дискографию" },
-            en: { music: "music", location: "Worldwide", download: "Download Discography" }
-        };
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+        });
 
-        langToggle.addEventListener('click', () => {
-            currentLang = currentLang === 'en' ? 'ru' : 'en';
-            navMusic.innerText = dict[currentLang].music;
-            textLocation.innerText = dict[currentLang].location;
-            btnDownload.innerText = dict[currentLang].download;
+        // ВЫРАВНИВАНИЕ
+        const catalogItems = document.querySelectorAll('.catalog-item');
+        const albumContents = document.querySelectorAll('.album-content');
+        const displayArea = document.getElementById('display-area');
+
+        catalogItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                
+                catalogItems.forEach(i => i.classList.remove('active'));
+                albumContents.forEach(c => c.classList.remove('active'));
+
+                item.classList.add('active');
+                
+                const targetId = item.getAttribute('data-target');
+                const targetAlbum = document.getElementById(targetId);
+                
+                displayArea.style.display = 'block';
+                targetAlbum.classList.add('active');
+
+                if(window.innerWidth > 900) {
+                    const rect = item.getBoundingClientRect();
+                    let calculatedTop = rect.top;
+                    
+                    if (calculatedTop + 400 > window.innerHeight - 50) {
+                        calculatedTop = window.innerHeight - 450; 
+                    }
+                    
+                    displayArea.style.top = calculatedTop + 'px';
+                }
+            });
         });
     </script>
 </body>
