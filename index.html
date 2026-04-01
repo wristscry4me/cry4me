@@ -45,14 +45,15 @@
             opacity: 0.5;
         }
 
-        /* ЛОГОТИП */
+        /* ЛОГОТИП (Кликабельный, маленький) */
         #logo-container {
             position: fixed;
             top: 30px;
             left: 30px;
-            width: 40px;
-            height: 40px;
+            width: 35px; /* Сделали меньше, как референс */
+            height: 35px;
             z-index: 100;
+            cursor: pointer; /* Показываем, что это кнопка */
         }
 
         #logo-container img {
@@ -127,31 +128,30 @@
             pointer-events: none;
         }
 
-        /* ДЕФОЛТНАЯ СТАРТОВАЯ КАРТИНКА (До клика) */
+        /* ДЕФОЛТНАЯ СТАРТОВАЯ КАРТИНКА (Больше, правее, без рамок) */
         #default-view {
             position: fixed;
             top: 50%;
-            left: 55%; /* Чуть правее середины */
+            left: 62%; /* Сдвинули еще правее (было 55%) */
             transform: translate(-50%, -50%);
-            width: 380px; /* Небольшое, но крупное */
-            aspect-ratio: 4 / 5; /* Эстетичный вертикальный формат */
+            width: 550px; /* Сделали картинку существенно больше */
             z-index: 30;
-            background-color: var(--line-color); /* Заглушка, если картинка не загрузилась */
+            /* Убрали background-color и aspect-ratio, чтобы не было серых полос */
             transition: opacity 0.5s ease;
         }
 
         #default-view img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto; /* Естественные пропорции */
+            display: block;
             transition: opacity 0.5s ease;
         }
 
         body.dark-mode #default-view img {
-            opacity: 0.8; /* В темной теме картинка чуть приглушается для стиля */
+            opacity: 0.8; 
         }
 
-        /* БЛОК ПОКАЗА АЛЬБОМА (Скрыт до клика) */
+        /* БЛОК ПОКАЗА АЛЬБОМА */
         #display-area {
             position: fixed;
             left: 300px;
@@ -272,6 +272,7 @@
 </head>
 <body>
 
+    <!-- Логотип (Кликабельный для возврата) -->
     <a href="#" id="logo-container">
         <img src="logo.png" alt="logo" onerror="this.style.display='none'">
     </a>
@@ -303,9 +304,8 @@
         <div class="catalog-item" data-target="album-13">ピンクのブレスレット</div>
     </nav>
 
-    <!-- СТАРТОВАЯ КАРТИНКА (Исчезнет при клике на альбом) -->
+    <!-- СТАРТОВАЯ КАРТИНКА -->
     <div id="default-view">
-        <!-- Загрузи сюда стильное фото, назови его hero.jpg -->
         <img src="hero.jpg" alt="cry 4 me" onerror="this.style.display='none'">
     </div>
 
@@ -388,18 +388,19 @@
             body.classList.toggle('dark-mode');
         });
 
-        // ВЫРАВНИВАНИЕ И СКРЫТИЕ ДЕФОЛТНОЙ КАРТИНКИ
+        // ЛОГИКА ИНТЕРФЕЙСА
         const catalogItems = document.querySelectorAll('.catalog-item');
         const albumContents = document.querySelectorAll('.album-content');
         const displayArea = document.getElementById('display-area');
         const defaultView = document.getElementById('default-view');
+        const logo = document.getElementById('logo-container');
 
+        // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 
-                // Прячем стартовую картинку навсегда (до перезагрузки страницы)
                 if (defaultView) {
-                    defaultView.style.display = 'none';
+                    defaultView.style.display = 'none'; // Прячем стартовую картинку
                 }
 
                 catalogItems.forEach(i => i.classList.remove('active'));
@@ -413,6 +414,7 @@
                 displayArea.style.display = 'block';
                 targetAlbum.classList.add('active');
 
+                // Выравнивание
                 if(window.innerWidth > 900) {
                     const rect = item.getBoundingClientRect();
                     let calculatedTop = rect.top;
@@ -424,6 +426,23 @@
                     displayArea.style.top = calculatedTop + 'px';
                 }
             });
+        });
+
+        // КЛИК НА ЛОГОТИП (Возврат на главную)
+        logo.addEventListener('click', (e) => {
+            e.preventDefault(); // Останавливает стандартное дерганье страницы вверх
+            
+            // Прячем альбомы
+            displayArea.style.display = 'none';
+            
+            // Снимаем выделение со всех треков
+            catalogItems.forEach(i => i.classList.remove('active'));
+            albumContents.forEach(c => c.classList.remove('active'));
+            
+            // Возвращаем большую картинку
+            if (defaultView) {
+                defaultView.style.display = 'block';
+            }
         });
     </script>
 </body>
