@@ -30,7 +30,7 @@
             text-transform: uppercase;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            -webkit-text-size-adjust: none; /* Запрещает айфонам ломать мелкий шрифт */
+            -webkit-text-size-adjust: none; 
             transition: background-color 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
         }
@@ -71,7 +71,7 @@
             50% { opacity: 1; }
         }
 
-        /* ЛОГОТИП */
+        /* ЛОГОТИП (НАМЕРТВО ПРИБИТ К УГЛУ) */
         #logo-container {
             position: fixed;
             top: 30px;
@@ -93,7 +93,7 @@
             filter: invert(1); 
         }
 
-        /* КНОПКА ТЕМЫ */
+        /* КНОПКА ТЕМЫ (НАМЕРТВО ПРИБИТА К УГЛУ) */
         #theme-toggle {
             position: fixed;
             top: 30px;
@@ -121,7 +121,7 @@
             z-index: 50;
             height: calc(100vh - 200px);
             overflow-y: auto;
-            padding-right: 120px; /* Отступ, чтобы длинная полоска не обрезалась */
+            padding-right: 120px; 
             padding-bottom: 300px; 
         }
 
@@ -139,13 +139,13 @@
             transform: translateX(12px);
         }
 
-        /* ПОЛОСА-УКАЗАТЕЛЬ (Сделали длиннее) */
+        /* ПОЛОСА-УКАЗАТЕЛЬ */
         .catalog-item.active::after {
             content: '';
             position: absolute;
             left: calc(100% + 15px); 
             top: 50%;
-            width: 80px; /* Идеальная длина */
+            width: 80px; 
             height: 1px;
             background-color: var(--line-color);
             z-index: -1;
@@ -178,7 +178,6 @@
             text-align: left; 
         }
 
-        /* КОНТЕЙНЕР ДЛЯ ASCII (Нужен для правильного масштаба на телефонах) */
         #ascii-wrapper {
             width: 100%;
             overflow: hidden;
@@ -259,10 +258,15 @@
             flex-direction: column;
             justify-content: space-between; 
             height: 400px; 
+            width: 100%; /* Занимает всё доступное место */
             max-width: 400px;
             padding: 2px 0;
             box-sizing: border-box;
             z-index: 10;
+        }
+
+        .info-top {
+            width: 100%;
         }
 
         .info-top p {
@@ -288,10 +292,10 @@
             padding-bottom: 1px;
         }
 
-        /* АУДИО ПЛЕЕР */
+        /* АУДИО ПЛЕЕР (Длинный и удобный) */
         .audio-player {
-            width: 100%;
-            height: 30px;
+            width: 100%; /* Растянут на всю ширину текстового блока */
+            height: 40px; /* Сделал толще для удобства на телефоне */
             margin-top: 20px;
             outline: none;
             filter: grayscale(100%) contrast(1.2);
@@ -323,12 +327,10 @@
             height: 12px; 
             width: auto;
             display: block;
-            /* Обесцвечиваем картинки (черно-белые), но НЕ закрашиваем их полностью */
             filter: grayscale(100%);
             transition: filter 0.4s;
         }
 
-        /* В темной теме они инвертируются, чтобы их было видно */
         body.dark-mode .platform-btn img {
             filter: grayscale(100%) invert(1); 
         }
@@ -343,18 +345,10 @@
             z-index: 100;
         }
 
-        /* МОБИЛЬНАЯ ВЕРСИЯ (Глубокая проработка) */
+        /* МОБИЛЬНАЯ ВЕРСИЯ */
         @media (max-width: 900px) {
             #preloader { display: none; }
             
-            /* Лого и кнопка больше не плавают, а закреплены за верхом страницы */
-            #logo-container {
-                position: absolute;
-            }
-            #theme-toggle {
-                position: absolute;
-            }
-
             #catalog-list {
                 position: static;
                 height: auto;
@@ -362,7 +356,7 @@
                 gap: 20px;
             }
             
-            .catalog-item.active::after { display: none; } /* На телефоне полоски не нужны */
+            .catalog-item.active::after { display: none; } 
             
             #default-view {
                 position: static;
@@ -382,7 +376,6 @@
                 margin-bottom: 20px;
             }
 
-            /* Хак для айфонов: арт масштабируется, чтобы обойти блокировку мелких шрифтов */
             #ascii-wrapper {
                 width: 100%;
                 overflow: hidden;
@@ -391,9 +384,9 @@
             #ascii-art {
                 font-size: 10px; 
                 line-height: 11px;
-                transform: scale(0.2); /* Уменьшаем в 5 раз визуально */
+                transform: scale(0.2); 
                 transform-origin: top left;
-                width: 500%; /* Компенсируем масштаб */
+                width: 500%; 
             }
 
             #display-area {
@@ -417,6 +410,7 @@
             .album-info {
                 height: auto; 
                 gap: 40px; 
+                width: 100%; /* Чтобы плеер был на всю ширину телефона */
             }
             
             #footer-info {
@@ -591,14 +585,15 @@
     <!-- КОНТЕНТ АЛЬБОМОВ -->
     <div id="display-area">
         
-        <!-- АЛЬБОМ 1 -->
+        <!-- АЛЬБОМ 1 (Плеер с запретом скачивания) -->
         <div class="album-content" id="album-1">
             <div class="album-cover"><img src="cover1.jpg" alt=""></div>
             <div class="album-info">
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track1.mp3" type="audio/mpeg"></audio>
+                    <!-- ПЛЕЕР -->
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track1.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://bnd.lc/c4mcr" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -615,7 +610,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">ANTISTRESSWORLDWIDE</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track2.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track2.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -632,7 +627,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">SELFHARMANGEL</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track3.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track3.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -649,7 +644,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">FCK EVERYTHING</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track4.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track4.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -666,7 +661,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">THE SEVEN WORKS OF MERCY</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track5.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track5.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://bnd.lc/cfmswm" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -683,7 +678,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">ВСЕ БУДЕТ ХОРОШО</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track6.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track6.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://band.link/cfmewbf" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -700,7 +695,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">SERAPHIM</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track7.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track7.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://bnd.lc/cfmas" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -717,7 +712,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">NOTYOURS</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track8.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track8.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -734,7 +729,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">BLOODYRING</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track9.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track9.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://bnd.lc/cfmbr" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -767,7 +762,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">SHARPEST PEARL</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track11.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track11.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -784,7 +779,7 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">FORGIVE ME</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <audio controls class="audio-player" preload="none"><source src="track12.mp3" type="audio/mpeg"></audio>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track12.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -867,7 +862,6 @@
         const displayArea = document.getElementById('display-area');
         const defaultView = document.getElementById('default-view');
         const logo = document.getElementById('logo-container');
-        const audioPlayers = document.querySelectorAll('audio');
 
         // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
@@ -888,14 +882,12 @@
                 displayArea.style.display = 'block';
                 targetAlbum.classList.add('active');
 
-                // Скролл вниз к альбому на мобильной версии
                 if(window.innerWidth <= 900) {
                     setTimeout(() => {
                         displayArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 100);
                 }
 
-                // Выравнивание для ПК
                 if(window.innerWidth > 900) {
                     const rect = item.getBoundingClientRect();
                     let calculatedTop = rect.top;
