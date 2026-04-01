@@ -12,7 +12,6 @@
             --line-color: rgba(0, 0, 0, 0.15);
         }
 
-        /* ТЕМНАЯ ТЕМА */
         body.dark-mode {
             --bg-color: #0c0c0c;
             --text-color: #ffffff; 
@@ -45,15 +44,41 @@
             opacity: 0.5;
         }
 
-        /* ЛОГОТИП (Кликабельный, маленький) */
+        /* ЭКРАН ЗАГРУЗКИ (PRELOADER) */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .preloader-text {
+            font-size: 12px;
+            letter-spacing: 4px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        /* ЛОГОТИП (Увеличен) */
         #logo-container {
             position: fixed;
             top: 30px;
             left: 30px;
-            width: 35px; /* Сделали меньше, как референс */
-            height: 35px;
+            width: 50px; /* Сделали больше */
+            height: 50px; /* Сделали больше */
             z-index: 100;
-            cursor: pointer; /* Показываем, что это кнопка */
+            cursor: pointer;
         }
 
         #logo-container img {
@@ -128,21 +153,32 @@
             pointer-events: none;
         }
 
-        /* ДЕФОЛТНАЯ СТАРТОВАЯ КАРТИНКА (Больше, правее, без рамок) */
+        /* ДЕФОЛТНЫЙ ВИД (Текст + Картинка) */
         #default-view {
             position: fixed;
             top: 50%;
-            left: 62%; /* Сдвинули еще правее (было 55%) */
+            left: 58%; /* Сдвинуто, чтобы влез и текст, и картинка */
             transform: translate(-50%, -50%);
-            width: 550px; /* Сделали картинку существенно больше */
+            display: flex;
+            align-items: center; /* Центрируем по вертикали */
+            gap: 20px; /* Расстояние между текстом и картинкой */
             z-index: 30;
-            /* Убрали background-color и aspect-ratio, чтобы не было серых полос */
             transition: opacity 0.5s ease;
         }
 
+        /* КОЛОНКА ТЕКСТА С ВОПРОСАМИ */
+        #typing-container {
+            width: 80px; /* Жестко узкий прямоугольник */
+            font-size: 10px;
+            line-height: 1.1; /* Плотные строки */
+            word-break: break-all; /* Жестко ломает вопросики на строки */
+            opacity: 0.6; /* Чуть тусклее картинки для стиля */
+            text-align: justify; /* Ровные края у блока текста */
+        }
+
         #default-view img {
-            width: 100%;
-            height: auto; /* Естественные пропорции */
+            width: 550px;
+            height: auto;
             display: block;
             transition: opacity 0.5s ease;
         }
@@ -189,7 +225,6 @@
             object-fit: cover;
         }
 
-        /* Информация справа */
         .album-info {
             display: flex;
             flex-direction: column;
@@ -233,6 +268,8 @@
 
         /* МОБИЛЬНАЯ ВЕРСИЯ */
         @media (max-width: 900px) {
+            #preloader { display: none; } /* Отключаем прелоадер на мобильных */
+            
             #catalog-list {
                 position: static;
                 height: auto;
@@ -244,9 +281,18 @@
             #default-view {
                 position: static;
                 transform: none;
+                flex-direction: column;
+                align-items: flex-start;
                 width: 100%;
                 max-width: 400px;
                 margin: 0 auto 50px auto;
+                padding: 0 30px;
+                box-sizing: border-box;
+            }
+
+            #typing-container {
+                width: 100%;
+                margin-bottom: 20px;
             }
 
             #display-area {
@@ -272,7 +318,12 @@
 </head>
 <body>
 
-    <!-- Логотип (Кликабельный для возврата) -->
+    <!-- ЭКРАН ЗАГРУЗКИ -->
+    <div id="preloader">
+        <span class="preloader-text">www.cry4me.com</span>
+    </div>
+
+    <!-- ЛОГОТИП -->
     <a href="#" id="logo-container">
         <img src="logo.png" alt="logo" onerror="this.style.display='none'">
     </a>
@@ -304,8 +355,9 @@
         <div class="catalog-item" data-target="album-13">ピンクのブレスレット</div>
     </nav>
 
-    <!-- СТАРТОВАЯ КАРТИНКА -->
+    <!-- СТАРТОВЫЙ ЭКРАН (Текст + Картинка) -->
     <div id="default-view">
+        <div id="typing-container"></div>
         <img src="hero.jpg" alt="cry 4 me" onerror="this.style.display='none'">
     </div>
 
@@ -388,6 +440,32 @@
             body.classList.toggle('dark-mode');
         });
 
+        // ЛОГИКА ЗАГРУЗКИ (PRELOADER) И ПЕЧАТИ ТЕКСТА
+        const preloader = document.getElementById('preloader');
+        const typingContainer = document.getElementById('typing-container');
+        const textToType = "Est. 2018 - ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????";
+        let typeIndex = 0;
+
+        // Когда страница загрузилась
+        window.addEventListener('load', () => {
+            // Ждем 2 секунды, показывая анимацию
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                
+                // Через полсекунды после исчезновения экрана начинаем печатать
+                setTimeout(startTyping, 500);
+            }, 2000);
+        });
+
+        function startTyping() {
+            if (typeIndex < textToType.length) {
+                typingContainer.innerHTML += textToType.charAt(typeIndex);
+                typeIndex++;
+                setTimeout(startTyping, 10); // Скорость печати (10мс = очень быстро)
+            }
+        }
+
         // ЛОГИКА ИНТЕРФЕЙСА
         const catalogItems = document.querySelectorAll('.catalog-item');
         const albumContents = document.querySelectorAll('.album-content');
@@ -400,7 +478,7 @@
             item.addEventListener('click', (e) => {
                 
                 if (defaultView) {
-                    defaultView.style.display = 'none'; // Прячем стартовую картинку
+                    defaultView.style.display = 'none';
                 }
 
                 catalogItems.forEach(i => i.classList.remove('active'));
@@ -414,7 +492,6 @@
                 displayArea.style.display = 'block';
                 targetAlbum.classList.add('active');
 
-                // Выравнивание
                 if(window.innerWidth > 900) {
                     const rect = item.getBoundingClientRect();
                     let calculatedTop = rect.top;
@@ -430,18 +507,14 @@
 
         // КЛИК НА ЛОГОТИП (Возврат на главную)
         logo.addEventListener('click', (e) => {
-            e.preventDefault(); // Останавливает стандартное дерганье страницы вверх
+            e.preventDefault(); 
             
-            // Прячем альбомы
             displayArea.style.display = 'none';
-            
-            // Снимаем выделение со всех треков
             catalogItems.forEach(i => i.classList.remove('active'));
             albumContents.forEach(c => c.classList.remove('active'));
             
-            // Возвращаем большую картинку
             if (defaultView) {
-                defaultView.style.display = 'block';
+                defaultView.style.display = 'flex'; // Возвращаем стартовый экран (flex, чтобы текст и картинка стояли рядом)
             }
         });
     </script>
