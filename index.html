@@ -15,7 +15,7 @@
         /* ТЕМНАЯ ТЕМА */
         body.dark-mode {
             --bg-color: #0c0c0c;
-            --text-color: #ffffff; /* Строго 100% белый */
+            --text-color: #ffffff; 
             --line-color: rgba(255, 255, 255, 0.15);
         }
 
@@ -24,7 +24,6 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            /* Ультра-тонкий шрифт */
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-weight: 100; 
             font-size: 10px; 
@@ -102,8 +101,8 @@
 
         .catalog-item {
             cursor: pointer;
-            color: var(--text-color); /* Всегда чистый цвет (черный или белый) */
-            opacity: 1; /* Убрал прозрачность, теперь текст яркий и четкий */
+            color: var(--text-color); 
+            opacity: 1; 
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
@@ -128,7 +127,31 @@
             pointer-events: none;
         }
 
-        /* БЛОК ПОКАЗА АЛЬБОМА */
+        /* ДЕФОЛТНАЯ СТАРТОВАЯ КАРТИНКА (До клика) */
+        #default-view {
+            position: fixed;
+            top: 50%;
+            left: 55%; /* Чуть правее середины */
+            transform: translate(-50%, -50%);
+            width: 380px; /* Небольшое, но крупное */
+            aspect-ratio: 4 / 5; /* Эстетичный вертикальный формат */
+            z-index: 30;
+            background-color: var(--line-color); /* Заглушка, если картинка не загрузилась */
+            transition: opacity 0.5s ease;
+        }
+
+        #default-view img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+
+        body.dark-mode #default-view img {
+            opacity: 0.8; /* В темной теме картинка чуть приглушается для стиля */
+        }
+
+        /* БЛОК ПОКАЗА АЛЬБОМА (Скрыт до клика) */
         #display-area {
             position: fixed;
             left: 300px;
@@ -217,6 +240,15 @@
                 gap: 20px;
             }
             .catalog-item.active::after { display: none; }
+            
+            #default-view {
+                position: static;
+                transform: none;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto 50px auto;
+            }
+
             #display-area {
                 position: static !important;
                 width: 100%;
@@ -271,7 +303,13 @@
         <div class="catalog-item" data-target="album-13">ピンクのブレスレット</div>
     </nav>
 
-    <!-- КОНТЕНТ -->
+    <!-- СТАРТОВАЯ КАРТИНКА (Исчезнет при клике на альбом) -->
+    <div id="default-view">
+        <!-- Загрузи сюда стильное фото, назови его hero.jpg -->
+        <img src="hero.jpg" alt="cry 4 me" onerror="this.style.display='none'">
+    </div>
+
+    <!-- КОНТЕНТ АЛЬБОМОВ -->
     <div id="display-area">
         
         <div class="album-content" id="album-1">
@@ -350,14 +388,20 @@
             body.classList.toggle('dark-mode');
         });
 
-        // ВЫРАВНИВАНИЕ
+        // ВЫРАВНИВАНИЕ И СКРЫТИЕ ДЕФОЛТНОЙ КАРТИНКИ
         const catalogItems = document.querySelectorAll('.catalog-item');
         const albumContents = document.querySelectorAll('.album-content');
         const displayArea = document.getElementById('display-area');
+        const defaultView = document.getElementById('default-view');
 
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 
+                // Прячем стартовую картинку навсегда (до перезагрузки страницы)
+                if (defaultView) {
+                    defaultView.style.display = 'none';
+                }
+
                 catalogItems.forEach(i => i.classList.remove('active'));
                 albumContents.forEach(c => c.classList.remove('active'));
 
