@@ -222,8 +222,6 @@
             overflow: hidden;
             white-space: nowrap;
             z-index: 20;
-            border-top: 1px solid var(--line-color);
-            border-bottom: 1px solid var(--line-color);
             padding: 5px 0;
             display: flex;
         }
@@ -678,9 +676,9 @@
                                                                                                                                                                                                                                                            </div>
         </div>
 
-        <!-- НОВАЯ БЕГУЩАЯ СТРОКА (ВИДНА ТОЛЬКО НА ГЛАВНОЙ) -->
+        <!-- БЕГУЩАЯ СТРОКА -->
         <div id="marquee-container">
-            <span class="marquee-text">NEW RELEASE OUT NOW /// LISTEN ON SPOTIFY & APPLE MUSIC /// CRY 4 ME ARCHIVE /// WORLDWIDE /// TOUR DATES UPDATED ///</span>
+            <span class="marquee-text">NEW RELEASE OUT NOW /// LISTEN ON SPOTIFY & APPLE MUSIC /// WORLDWIDE /// TOUR DATES UPDATED ///</span>
         </div>
     </div>
 
@@ -908,7 +906,7 @@
         </div>
     </div> <!-- Закрытие display-area -->
 
-    <!-- НОВЫЙ БЛОК: АФИШИ (EVENTS) -->
+    <!-- АФИШИ (EVENTS) -->
     <div id="events-area">
         <h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2>
         <div class="events-grid">
@@ -922,7 +920,6 @@
                 <img src="poster2.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
                 <div class="event-date">02.11.2024 / ST. PETERSBURG</div>
             </div>
-            <!-- Можно добавить больше афиш, просто копируя блок event-card -->
         </div>
     </div>
 
@@ -987,28 +984,42 @@
         // Находим все аудиоплееры
         const audioPlayers = document.querySelectorAll('.audio-player');
 
-        // Управление музыкой и визуализатором (эквалайзером)
-        audioPlayers.forEach((player, index) => {
+        // ИСПРАВЛЕННОЕ УПРАВЛЕНИЕ АНИМАЦИЕЙ
+        audioPlayers.forEach(player => {
+            // Находим к какому альбому относится этот конкретный плеер
+            const parentAlbum = player.closest('.album-content');
+            let associatedCatalogItem = null;
+
+            if (parentAlbum) {
+                const targetId = parentAlbum.id; // например "album-11"
+                // Ищем пункт меню, который ссылается на этот альбом
+                associatedCatalogItem = document.querySelector(`.catalog-item[data-target="${targetId}"]`);
+            }
+
             player.addEventListener('play', (e) => {
-                // Ставим на паузу все остальные треки
+                // Ставим на паузу остальные треки
                 audioPlayers.forEach(otherPlayer => {
                     if (otherPlayer !== e.target) {
                         otherPlayer.pause();
                     }
                 });
 
-                // Убираем анимацию эквалайзера у всех пунктов
+                // Убираем анимацию у всех пунктов меню
                 catalogItems.forEach(item => item.classList.remove('playing'));
-                // Добавляем анимацию эквалайзера к текущему пункту
-                catalogItems[index].classList.add('playing');
+                
+                // Включаем анимацию только у нужного пункта
+                if (associatedCatalogItem) {
+                    associatedCatalogItem.classList.add('playing');
+                }
             });
 
             player.addEventListener('pause', () => {
-                catalogItems[index].classList.remove('playing');
+                if (associatedCatalogItem) {
+                    associatedCatalogItem.classList.remove('playing');
+                }
             });
         });
 
-        // Функция для выравнивания правого блока
         function alignContentBlock(item, targetArea) {
             if(window.innerWidth <= 900) {
                 setTimeout(() => {
@@ -1031,7 +1042,6 @@
         // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
-                // Плеер НЕ выключается (глобальное поведение)
                 
                 if (defaultView) defaultView.style.display = 'none';
                 eventsArea.style.display = 'none';
@@ -1070,7 +1080,6 @@
         logo.addEventListener('click', (e) => {
             e.preventDefault(); 
             
-            // Музыка продолжает играть фоном, мы просто скрываем разделы
             displayArea.style.display = 'none';
             eventsArea.style.display = 'none';
 
