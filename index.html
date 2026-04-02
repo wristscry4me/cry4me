@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- OPEN GRAPH ТЕГИ ДЛЯ СОЦСЕТЕЙ -->
+    <meta property="og:title" content="cry 4 me | catalog">
+    <meta property="og:description" content="Official music archive, discography & live events.">
+    <meta property="og:image" content="cover1.jpg"> <!-- Поставьте сюда обложку лучшего альбома -->
+    <meta property="og:type" content="website">
+    
+    <!-- ИКОНКА ВО ВКЛАДКЕ БРАУЗЕРА -->
+    <link rel="icon" href="logo.png" type="image/png">
+
     <title>cry 4 me | catalog</title>
+    
     <style>
         /* ПЕРЕМЕННЫЕ ДЛЯ ТЕМ */
         :root {
@@ -18,6 +29,7 @@
             --line-color: rgba(255, 255, 255, 0.2);
         }
 
+        /* КАСТОМНЫЙ КУРСОР */
         body {
             margin: 0;
             padding: 0;
@@ -33,6 +45,11 @@
             -webkit-text-size-adjust: none; 
             transition: background-color 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
+            cursor: crosshair; /* ПРИЦЕЛ */
+        }
+
+        a, button, .catalog-item {
+            cursor: pointer;
         }
 
         a {
@@ -71,7 +88,7 @@
             50% { opacity: 1; }
         }
 
-        /* ЛОГОТИП (НАМЕРТВО ПРИБИТ К УГЛУ) */
+        /* ЛОГОТИП */
         #logo-container {
             position: fixed;
             top: 30px;
@@ -79,7 +96,6 @@
             width: 50px; 
             height: 50px; 
             z-index: 100;
-            cursor: pointer;
         }
 
         #logo-container img {
@@ -93,7 +109,7 @@
             filter: invert(1); 
         }
 
-        /* КНОПКА ТЕМЫ (НАМЕРТВО ПРИБИТА К УГЛУ) */
+        /* КНОПКА ТЕМЫ */
         #theme-toggle {
             position: fixed;
             top: 30px;
@@ -104,7 +120,6 @@
             font-family: inherit;
             font-size: 9px;
             font-weight: 100;
-            cursor: pointer;
             z-index: 100;
             letter-spacing: 2px;
         }
@@ -128,15 +143,23 @@
         #catalog-list::-webkit-scrollbar { display: none; }
 
         .catalog-item {
-            cursor: pointer;
             color: var(--text-color); 
             opacity: 1; 
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
+            display: flex;
+            align-items: center;
         }
 
         .catalog-item:hover, .catalog-item.active {
             transform: translateX(12px);
+        }
+
+        /* КНОПКА EVENTS */
+        .special-link {
+            margin-top: 20px;
+            border: 1px solid var(--text-color);
+            padding: 8px 12px;
         }
 
         /* ПОЛОСА-УКАЗАТЕЛЬ */
@@ -152,6 +175,32 @@
             pointer-events: none;
         }
 
+        /* АНИМИРОВАННЫЙ ЭКВАЛАЙЗЕР (ВИЗУАЛИЗАТОР МУЗЫКИ) */
+        .eq {
+            display: none;
+            margin-left: 10px;
+            height: 8px;
+            align-items: flex-end;
+            gap: 2px;
+        }
+        .eq span {
+            width: 2px;
+            background-color: var(--text-color);
+            animation: bounce 0.4s infinite alternate;
+        }
+        .eq span:nth-child(2) { animation-delay: 0.1s; }
+        .eq span:nth-child(3) { animation-delay: 0.2s; }
+        
+        @keyframes bounce {
+            from { height: 8px; }
+            to { height: 2px; }
+        }
+
+        /* Показываем эквалайзер только у активного/играющего трека */
+        .catalog-item.playing .eq {
+            display: inline-flex;
+        }
+
         /* ДЕФОЛТНЫЙ ВИД (Текст + ASCII Арт) */
         #default-view {
             position: fixed;
@@ -162,6 +211,34 @@
             align-items: center; 
             gap: 50px; 
             z-index: 30;
+        }
+
+        /* БЕГУЩАЯ СТРОКА (MARQUEE) */
+        #marquee-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: calc(100% - 250px);
+            overflow: hidden;
+            white-space: nowrap;
+            z-index: 20;
+            border-top: 1px solid var(--line-color);
+            border-bottom: 1px solid var(--line-color);
+            padding: 5px 0;
+            display: flex;
+        }
+        
+        .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 10px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
         }
 
         /* ПРЯМОУГОЛЬНИК ИЗ ВОПРОСОВ */
@@ -211,8 +288,8 @@
             animation: glitchAppear 0.8s forwards;
         }
 
-        /* БЛОК ПОКАЗА АЛЬБОМА */
-        #display-area {
+        /* БЛОК ПОКАЗА АЛЬБОМА И АФИШ */
+        #display-area, #events-area {
             position: fixed;
             left: 320px;
             width: calc(100% - 370px);
@@ -230,6 +307,34 @@
         .album-content.active {
             display: flex;
             animation: fadeIn 0.5s ease;
+        }
+
+        /* СЕТКА ДЛЯ АФИШ */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-bottom: 50px;
+        }
+
+        .event-card img {
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--line-color);
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .event-card img:hover {
+            filter: grayscale(0%);
+        }
+
+        .event-date {
+            margin-top: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
         }
 
         @keyframes fadeIn {
@@ -258,15 +363,11 @@
             flex-direction: column;
             justify-content: space-between; 
             height: 400px; 
-            width: 100%; /* Занимает всё доступное место */
+            width: 100%;
             max-width: 400px;
             padding: 2px 0;
             box-sizing: border-box;
             z-index: 10;
-        }
-
-        .info-top {
-            width: 100%;
         }
 
         .info-top p {
@@ -292,10 +393,10 @@
             padding-bottom: 1px;
         }
 
-        /* АУДИО ПЛЕЕР (Длинный и удобный) */
+        /* АУДИО ПЛЕЕР */
         .audio-player {
-            width: 100%; /* Растянут на всю ширину текстового блока */
-            height: 40px; /* Сделал толще для удобства на телефоне */
+            width: 100%; 
+            height: 40px; 
             margin-top: 20px;
             outline: none;
             filter: grayscale(100%) contrast(1.2);
@@ -368,6 +469,12 @@
                 padding: 0 30px;
                 box-sizing: border-box;
             }
+
+            #marquee-container {
+                position: static;
+                width: 100%;
+                margin-top: 20px;
+            }
             
             #typing-container {
                 width: 100%;
@@ -376,10 +483,7 @@
                 margin-bottom: 20px;
             }
 
-            #ascii-wrapper {
-                width: 100%;
-                overflow: hidden;
-            }
+            #ascii-wrapper { width: 100%; overflow: hidden; }
             
             #ascii-art {
                 font-size: 10px; 
@@ -389,16 +493,14 @@
                 width: 500%; 
             }
 
-            #display-area {
+            #display-area, #events-area {
                 position: static !important;
                 width: 100%;
                 padding: 0 30px 50px 30px;
                 box-sizing: border-box;
             }
             
-            .album-content.active {
-                flex-direction: column;
-            }
+            .album-content.active { flex-direction: column; }
             
             .album-cover {
                 width: 100%;
@@ -407,17 +509,9 @@
                 max-width: 400px;
             }
             
-            .album-info {
-                height: auto; 
-                gap: 40px; 
-                width: 100%; /* Чтобы плеер был на всю ширину телефона */
-            }
+            .album-info { height: auto; gap: 40px; width: 100%; }
             
-            #footer-info {
-                position: static;
-                text-align: left;
-                padding: 30px;
-            }
+            #footer-info { position: static; text-align: left; padding: 30px; }
         }
     </style>
 </head>
@@ -442,22 +536,26 @@
     </div>
 
     <nav id="catalog-list">
-        <div class="catalog-item" data-target="album-1">cachalot remix</div>
-        <div class="catalog-item" data-target="album-2">antistressworldwide</div>
-        <div class="catalog-item" data-target="album-3">selfharmangel</div>
-        <div class="catalog-item" data-target="album-4">fck everything</div>
-        <div class="catalog-item" data-target="album-5">The Seven Works of Mercy</div>
-        <div class="catalog-item" data-target="album-6">все будет хорошо</div>
-        <div class="catalog-item" data-target="album-7">Seraphim</div>
-        <div class="catalog-item" data-target="album-8">notyours</div>
-        <div class="catalog-item" data-target="album-9">bloodyring</div>
-        <div class="catalog-item" data-target="album-10">my wrists cry for me</div>
-        <div class="catalog-item" data-target="album-11">sharpest pearl</div>
-        <div class="catalog-item" data-target="album-12">forgive me</div>
-        <div class="catalog-item" data-target="album-13">ピンクのブレスレット</div>
+        <!-- Блок эквалайзера вшит прямо в меню -->
+        <div class="catalog-item" data-target="album-1">cachalot remix <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-2">antistressworldwide <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-3">selfharmangel <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-4">fck everything <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-5">The Seven Works of Mercy <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-6">все будет хорошо <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-7">Seraphim <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-8">notyours <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-9">bloodyring <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-10">my wrists cry for me <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-11">sharpest pearl <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-12">forgive me <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-13">ピンクのブレスレット <span class="eq"><span></span><span></span><span></span></span></div>
+        
+        <!-- НОВАЯ КНОПКА ДЛЯ АФИШ -->
+        <div class="catalog-item special-link" id="btn-events">[ LIVE / DJ SETS ]</div>
     </nav>
 
-    <!-- СТАРТОВЫЙ ЭКРАН -->
+    <!-- СТАРТОВЫЙ ЭКРАН С ASCII И БЕГУЩЕЙ СТРОКОЙ -->
     <div id="default-view">
         <div id="typing-container"></div>
         <div id="ascii-wrapper">
@@ -579,12 +677,17 @@
                                                                                                                                                                                                                                                            
                                                                                                                                                                                                                                                            </div>
         </div>
+
+        <!-- НОВАЯ БЕГУЩАЯ СТРОКА (ВИДНА ТОЛЬКО НА ГЛАВНОЙ) -->
+        <div id="marquee-container">
+            <span class="marquee-text">NEW RELEASE OUT NOW /// LISTEN ON SPOTIFY & APPLE MUSIC /// CRY 4 ME ARCHIVE /// WORLDWIDE /// TOUR DATES UPDATED ///</span>
+        </div>
     </div>
 
     <!-- КОНТЕНТ АЛЬБОМОВ -->
     <div id="display-area">
         
-        <!-- АЛЬБОМ 1 (Плеер с запретом скачивания) -->
+        <!-- АЛЬБОМ 1 -->
         <div class="album-content" id="album-1">
             <div class="album-cover"><img src="cover1.jpg" alt=""></div>
             <div class="album-info">
@@ -803,6 +906,24 @@
                 </div>
             </div>
         </div>
+    </div> <!-- Закрытие display-area -->
+
+    <!-- НОВЫЙ БЛОК: АФИШИ (EVENTS) -->
+    <div id="events-area">
+        <h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2>
+        <div class="events-grid">
+            <!-- Пример афиши 1 -->
+            <div class="event-card">
+                <img src="poster1.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
+                <div class="event-date">15.10.2024 / MOSCOW</div>
+            </div>
+            <!-- Пример афиши 2 -->
+            <div class="event-card">
+                <img src="poster2.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
+                <div class="event-date">02.11.2024 / ST. PETERSBURG</div>
+            </div>
+            <!-- Можно добавить больше афиш, просто копируя блок event-card -->
+        </div>
     </div>
 
     <script>
@@ -854,45 +975,67 @@
             asciiArt.classList.add('show-art');
         }
 
-        // ЛОГИКА ИНТЕРФЕЙСА И УПРАВЛЕНИЯ АУДИО
-        const catalogItems = document.querySelectorAll('.catalog-item');
+        // ЛОГИКА ИНТЕРФЕЙСА, ПЛЕЕРА И ЭКВАЛАЙЗЕРА
+        const catalogItems = document.querySelectorAll('.catalog-item:not(.special-link)');
         const albumContents = document.querySelectorAll('.album-content');
         const displayArea = document.getElementById('display-area');
+        const eventsArea = document.getElementById('events-area');
         const defaultView = document.getElementById('default-view');
         const logo = document.getElementById('logo-container');
+        const btnEvents = document.getElementById('btn-events');
         
         // Находим все аудиоплееры
         const audioPlayers = document.querySelectorAll('.audio-player');
 
-        // Фишка 1: Если включаем один трек, все остальные ставятся на паузу
-        audioPlayers.forEach(player => {
+        // Управление музыкой и визуализатором (эквалайзером)
+        audioPlayers.forEach((player, index) => {
             player.addEventListener('play', (e) => {
+                // Ставим на паузу все остальные треки
                 audioPlayers.forEach(otherPlayer => {
                     if (otherPlayer !== e.target) {
                         otherPlayer.pause();
                     }
                 });
+
+                // Убираем анимацию эквалайзера у всех пунктов
+                catalogItems.forEach(item => item.classList.remove('playing'));
+                // Добавляем анимацию эквалайзера к текущему пункту
+                catalogItems[index].classList.add('playing');
+            });
+
+            player.addEventListener('pause', () => {
+                catalogItems[index].classList.remove('playing');
             });
         });
 
-        // Функция для остановки ВСЕХ треков и перемотки в начало
-        function stopAllAudio() {
-            audioPlayers.forEach(audio => {
-                audio.pause();
-                audio.currentTime = 0; 
-            });
+        // Функция для выравнивания правого блока
+        function alignContentBlock(item, targetArea) {
+            if(window.innerWidth <= 900) {
+                setTimeout(() => {
+                    targetArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+
+            if(window.innerWidth > 900) {
+                const rect = item.getBoundingClientRect();
+                let calculatedTop = rect.top;
+                
+                if (calculatedTop + 400 > window.innerHeight - 50) {
+                    calculatedTop = window.innerHeight - 450; 
+                }
+                
+                targetArea.style.top = calculatedTop + 'px';
+            }
         }
 
         // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
+                // Плеер НЕ выключается (глобальное поведение)
                 
-                if (defaultView) {
-                    defaultView.style.display = 'none';
-                }
-
-                // Фишка 2: Выключаем трек при переключении на другой альбом
-                stopAllAudio();
+                if (defaultView) defaultView.style.display = 'none';
+                eventsArea.style.display = 'none';
+                btnEvents.classList.remove('active');
 
                 catalogItems.forEach(i => i.classList.remove('active'));
                 albumContents.forEach(c => c.classList.remove('active'));
@@ -905,35 +1048,35 @@
                 displayArea.style.display = 'block';
                 targetAlbum.classList.add('active');
 
-                if(window.innerWidth <= 900) {
-                    setTimeout(() => {
-                        displayArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                }
-
-                if(window.innerWidth > 900) {
-                    const rect = item.getBoundingClientRect();
-                    let calculatedTop = rect.top;
-                    
-                    if (calculatedTop + 400 > window.innerHeight - 50) {
-                        calculatedTop = window.innerHeight - 450; 
-                    }
-                    
-                    displayArea.style.top = calculatedTop + 'px';
-                }
+                alignContentBlock(item, displayArea);
             });
+        });
+
+        // КЛИК НА РАЗДЕЛ "EVENTS / LIVE"
+        btnEvents.addEventListener('click', (e) => {
+            if (defaultView) defaultView.style.display = 'none';
+            displayArea.style.display = 'none';
+
+            catalogItems.forEach(i => i.classList.remove('active'));
+            albumContents.forEach(c => c.classList.remove('active'));
+
+            btnEvents.classList.add('active');
+            eventsArea.style.display = 'block';
+
+            alignContentBlock(btnEvents, eventsArea);
         });
 
         // КЛИК НА ЛОГОТИП (Возврат на главную)
         logo.addEventListener('click', (e) => {
             e.preventDefault(); 
             
-            // Фишка 3: Выключаем трек при возврате на главную страницу с ASCII-артом
-            stopAllAudio();
-
+            // Музыка продолжает играть фоном, мы просто скрываем разделы
             displayArea.style.display = 'none';
+            eventsArea.style.display = 'none';
+
             catalogItems.forEach(i => i.classList.remove('active'));
             albumContents.forEach(c => c.classList.remove('active'));
+            btnEvents.classList.remove('active');
             
             if (defaultView) {
                 defaultView.style.display = 'flex'; 
