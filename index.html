@@ -7,7 +7,7 @@
     <!-- OPEN GRAPH ТЕГИ ДЛЯ СОЦСЕТЕЙ -->
     <meta property="og:title" content="cry 4 me | catalog">
     <meta property="og:description" content="Official music archive, discography & live events.">
-    <meta property="og:image" content="cover1.jpg"> <!-- Поставьте сюда обложку лучшего альбома -->
+    <meta property="og:image" content="cover1.jpg">
     <meta property="og:type" content="website">
     
     <!-- ИКОНКА ВО ВКЛАДКЕ БРАУЗЕРА -->
@@ -45,10 +45,10 @@
             -webkit-text-size-adjust: none; 
             transition: background-color 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
-            cursor: crosshair; /* ПРИЦЕЛ */
+            cursor: crosshair; 
         }
 
-        a, button, .catalog-item {
+        a, button, .catalog-item, .track-item {
             cursor: pointer;
         }
 
@@ -58,9 +58,7 @@
             transition: opacity 0.2s;
         }
 
-        a:hover {
-            opacity: 0.5;
-        }
+        a:hover { opacity: 0.5; }
 
         /* ЭКРАН ЗАГРУЗКИ */
         #preloader {
@@ -105,9 +103,7 @@
             transition: filter 0.4s;
         }
 
-        body.dark-mode #logo-container img {
-            filter: invert(1); 
-        }
+        body.dark-mode #logo-container img { filter: invert(1); }
 
         /* КНОПКА ТЕМЫ */
         #theme-toggle {
@@ -140,7 +136,7 @@
             padding-bottom: 300px; 
         }
 
-        #catalog-list::-webkit-scrollbar { display: none; }
+        #catalog-list::-webkit-scrollbar, .tracklist-container::-webkit-scrollbar { display: none; }
 
         .catalog-item {
             color: var(--text-color); 
@@ -151,18 +147,14 @@
             align-items: center;
         }
 
-        .catalog-item:hover, .catalog-item.active {
-            transform: translateX(12px);
-        }
+        .catalog-item:hover, .catalog-item.active { transform: translateX(12px); }
 
-        /* КНОПКА EVENTS */
         .special-link {
             margin-top: 20px;
             border: 1px solid var(--text-color);
             padding: 8px 12px;
         }
 
-        /* ПОЛОСА-УКАЗАТЕЛЬ */
         .catalog-item.active::after {
             content: '';
             position: absolute;
@@ -175,7 +167,7 @@
             pointer-events: none;
         }
 
-        /* АНИМИРОВАННЫЙ ЭКВАЛАЙЗЕР (ВИЗУАЛИЗАТОР МУЗЫКИ) */
+        /* ЭКВАЛАЙЗЕР */
         .eq {
             display: none;
             margin-left: 10px;
@@ -196,12 +188,9 @@
             to { height: 2px; }
         }
 
-        /* Показываем эквалайзер только у активного/играющего трека */
-        .catalog-item.playing .eq {
-            display: inline-flex;
-        }
+        .catalog-item.playing .eq, .track-item.playing .eq { display: inline-flex; }
 
-        /* ДЕФОЛТНЫЙ ВИД (Текст + ASCII Арт) */
+        /* ДЕФОЛТНЫЙ ВИД */
         #default-view {
             position: fixed;
             top: 50%;
@@ -213,7 +202,7 @@
             z-index: 30;
         }
 
-        /* БЕГУЩАЯ СТРОКА (MARQUEE) */
+        /* БЕГУЩАЯ СТРОКА (БЕЗ ПОЛОС) */
         #marquee-container {
             position: fixed;
             bottom: 30px;
@@ -239,7 +228,7 @@
             100% { transform: translate(-100%, 0); }
         }
 
-        /* ПРЯМОУГОЛЬНИК ИЗ ВОПРОСОВ */
+        /* ТЕКСТ С ВОПРОСАМИ И ASCII АРТ */
         #typing-container {
             width: 80px; 
             flex-shrink: 0;
@@ -253,14 +242,8 @@
             text-align: left; 
         }
 
-        #ascii-wrapper {
-            width: 100%;
-            overflow: hidden;
-            display: flex;
-            justify-content: flex-start;
-        }
+        #ascii-wrapper { width: 100%; overflow: hidden; display: flex; justify-content: flex-start; }
 
-        /* ASCII АРТ */
         #ascii-art {
             font-family: 'Courier New', Courier, monospace; 
             white-space: pre; 
@@ -272,19 +255,13 @@
         }
 
         @keyframes glitchAppear {
-            0% { opacity: 0; }
-            10% { opacity: 0.8; }
-            20% { opacity: 0.1; }
-            30% { opacity: 1; }
-            40% { opacity: 0; }
-            50% { opacity: 0.9; }
-            60% { opacity: 0.2; }
-            100% { opacity: 1; }
+            0%, 40% { opacity: 0; }
+            10%, 50% { opacity: 0.8; }
+            20%, 60% { opacity: 0.2; }
+            30%, 100% { opacity: 1; }
         }
 
-        #ascii-art.show-art {
-            animation: glitchAppear 0.8s forwards;
-        }
+        #ascii-art.show-art { animation: glitchAppear 0.8s forwards; }
 
         /* БЛОК ПОКАЗА АЛЬБОМА И АФИШ */
         #display-area, #events-area {
@@ -296,18 +273,9 @@
             background-color: var(--bg-color); 
         }
 
-        .album-content {
-            display: none;
-            align-items: flex-start;
-            gap: 30px; 
-        }
+        .album-content { display: none; align-items: flex-start; gap: 30px; height: 100%; }
+        .album-content.active { display: flex; animation: fadeIn 0.5s ease; }
 
-        .album-content.active {
-            display: flex;
-            animation: fadeIn 0.5s ease;
-        }
-
-        /* СЕТКА ДЛЯ АФИШ */
         .events-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -324,38 +292,18 @@
             filter: grayscale(100%);
             transition: filter 0.3s ease;
         }
-
-        .event-card img:hover {
-            filter: grayscale(0%);
-        }
-
-        .event-date {
-            margin-top: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-        }
+        .event-card img:hover { filter: grayscale(0%); }
+        .event-date { margin-top: 10px; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ОБЛОЖКА */
-        .album-cover {
-            width: 400px;
-            height: 400px; 
-            background-color: var(--line-color);
-            flex-shrink: 0;
-            z-index: 10;
-        }
+        /* ОБЛОЖКА И ИНФО */
+        .album-cover { width: 400px; height: 400px; background-color: var(--line-color); flex-shrink: 0; z-index: 10; }
+        .album-cover img { width: 100%; height: 100%; object-fit: cover; }
 
-        .album-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* ИНФОРМАЦИЯ */
         .album-info {
             display: flex;
             flex-direction: column;
@@ -368,147 +316,61 @@
             z-index: 10;
         }
 
-        .info-top p {
-            margin: 0 0 3px 0; 
-            line-height: 1.2; 
-        }
+        .info-top { display: flex; flex-direction: column; max-height: calc(100% - 40px); }
+        .info-top p { margin: 0 0 3px 0; line-height: 1.2; }
+        .info-title { font-size: 11px; font-weight: 300; margin-bottom: 8px !important; letter-spacing: 2px; }
 
-        .info-title {
-            font-size: 11px;
-            font-weight: 300; 
-            margin-bottom: 8px !important; 
-            letter-spacing: 2px;
-        }
+        .links { display: flex; gap: 15px; margin-top: 10px; }
+        .links a { border-bottom: 1px solid var(--text-color); padding-bottom: 1px; }
 
-        .links {
+        /* ВНУТРЕННИЙ ТРЕКЛИСТ */
+        .tracklist-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding-right: 10px;
             display: flex;
-            gap: 15px;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 12px;
+            border-top: 1px solid var(--line-color);
+            padding-top: 15px;
         }
-
-        .links a {
-            border-bottom: 1px solid var(--text-color);
-            padding-bottom: 1px;
+        
+        .track-item {
+            opacity: 0.5;
+            transition: opacity 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
         }
+        .track-item:hover, .track-item.active { opacity: 1; transform: translateX(5px); }
 
         /* АУДИО ПЛЕЕР */
-        .audio-player {
-            width: 100%; 
-            height: 40px; 
-            margin-top: 20px;
-            outline: none;
-            filter: grayscale(100%) contrast(1.2);
-        }
+        .audio-player { width: 100%; height: 40px; margin-top: auto; outline: none; filter: grayscale(100%) contrast(1.2); flex-shrink: 0; }
+        body.dark-mode .audio-player { filter: invert(1) hue-rotate(180deg) grayscale(100%) contrast(1.2); }
 
-        body.dark-mode .audio-player {
-            filter: invert(1) hue-rotate(180deg) grayscale(100%) contrast(1.2);
-        }
+        .info-bottom { display: flex; align-items: flex-end; gap: 15px; }
+        .platform-btn { display: inline-block; border: none; transition: opacity 0.3s; padding: 10px 0 0 0; }
+        .platform-btn:hover { opacity: 0.4; }
+        .platform-btn img { height: 12px; width: auto; display: block; filter: grayscale(100%); transition: filter 0.4s; }
+        body.dark-mode .platform-btn img { filter: grayscale(100%) invert(1); }
 
-        /* БЛОК ИКОНОК ПЛАТФОРМ */
-        .info-bottom {
-            display: flex;
-            align-items: flex-end;
-            gap: 15px; 
-        }
+        #footer-info { position: fixed; bottom: 30px; right: 30px; text-align: right; line-height: 1.6; z-index: 100; }
 
-        .platform-btn {
-            display: inline-block;
-            border: none;
-            transition: opacity 0.3s;
-            padding: 10px 0 0 0; 
-        }
-
-        .platform-btn:hover {
-            opacity: 0.4;
-        }
-
-        .platform-btn img {
-            height: 12px; 
-            width: auto;
-            display: block;
-            filter: grayscale(100%);
-            transition: filter 0.4s;
-        }
-
-        body.dark-mode .platform-btn img {
-            filter: grayscale(100%) invert(1); 
-        }
-
-        /* СОЦСЕТИ */
-        #footer-info {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            text-align: right;
-            line-height: 1.6;
-            z-index: 100;
-        }
-
-        /* МОБИЛЬНАЯ ВЕРСИЯ */
+        /* МОБИЛКА */
         @media (max-width: 900px) {
             #preloader { display: none; }
-            
-            #catalog-list {
-                position: static;
-                height: auto;
-                padding: 100px 30px 30px 30px;
-                gap: 20px;
-            }
-            
+            #catalog-list { position: static; height: auto; padding: 100px 30px 30px 30px; gap: 20px; }
             .catalog-item.active::after { display: none; } 
-            
-            #default-view {
-                position: static;
-                transform: none;
-                flex-direction: column;
-                align-items: flex-start;
-                width: 100%;
-                margin: 0 auto 50px auto;
-                padding: 0 30px;
-                box-sizing: border-box;
-            }
-
-            #marquee-container {
-                position: static;
-                width: 100%;
-                margin-top: 20px;
-            }
-            
-            #typing-container {
-                width: 100%;
-                height: auto;
-                word-break: normal; 
-                margin-bottom: 20px;
-            }
-
-            #ascii-wrapper { width: 100%; overflow: hidden; }
-            
-            #ascii-art {
-                font-size: 10px; 
-                line-height: 11px;
-                transform: scale(0.2); 
-                transform-origin: top left;
-                width: 500%; 
-            }
-
-            #display-area, #events-area {
-                position: static !important;
-                width: 100%;
-                padding: 0 30px 50px 30px;
-                box-sizing: border-box;
-            }
-            
+            #default-view { position: static; transform: none; flex-direction: column; align-items: flex-start; width: 100%; margin: 0 auto 50px auto; padding: 0 30px; box-sizing: border-box; }
+            #marquee-container { position: static; width: 100%; margin-top: 20px; }
+            #typing-container { width: 100%; height: auto; margin-bottom: 20px; }
+            #ascii-art { font-size: 10px; line-height: 11px; transform: scale(0.2); transform-origin: top left; width: 500%; }
+            #display-area, #events-area { position: static !important; width: 100%; padding: 0 30px 50px 30px; }
             .album-content.active { flex-direction: column; }
-            
-            .album-cover {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 1/1;
-                max-width: 400px;
-            }
-            
+            .album-cover { width: 100%; height: auto; aspect-ratio: 1/1; max-width: 400px; }
             .album-info { height: auto; gap: 40px; width: 100%; }
-            
+            .tracklist-container { max-height: 300px; }
             #footer-info { position: static; text-align: left; padding: 30px; }
         }
     </style>
@@ -534,7 +396,6 @@
     </div>
 
     <nav id="catalog-list">
-        <!-- Блок эквалайзера вшит прямо в меню -->
         <div class="catalog-item" data-target="album-1">cachalot remix <span class="eq"><span></span><span></span><span></span></span></div>
         <div class="catalog-item" data-target="album-2">antistressworldwide <span class="eq"><span></span><span></span><span></span></span></div>
         <div class="catalog-item" data-target="album-3">selfharmangel <span class="eq"><span></span><span></span><span></span></span></div>
@@ -549,11 +410,10 @@
         <div class="catalog-item" data-target="album-12">forgive me <span class="eq"><span></span><span></span><span></span></span></div>
         <div class="catalog-item" data-target="album-13">ピンクのブレスレット <span class="eq"><span></span><span></span><span></span></span></div>
         
-        <!-- НОВАЯ КНОПКА ДЛЯ АФИШ -->
         <div class="catalog-item special-link" id="btn-events">[ LIVE / DJ SETS ]</div>
     </nav>
 
-    <!-- СТАРТОВЫЙ ЭКРАН С ASCII И БЕГУЩЕЙ СТРОКОЙ -->
+    <!-- СТАРТОВЫЙ ЭКРАН -->
     <div id="default-view">
         <div id="typing-container"></div>
         <div id="ascii-wrapper">
@@ -676,23 +536,20 @@
                                                                                                                                                                                                                                                            </div>
         </div>
 
-        <!-- БЕГУЩАЯ СТРОКА -->
         <div id="marquee-container">
             <span class="marquee-text">NEW RELEASE OUT NOW /// LISTEN ON SPOTIFY & APPLE MUSIC /// WORLDWIDE /// TOUR DATES UPDATED ///</span>
         </div>
     </div>
 
-    <!-- КОНТЕНТ АЛЬБОМОВ -->
     <div id="display-area">
         
-        <!-- АЛЬБОМ 1 -->
+        <!-- АЛЬБОМЫ 1-9 (БЕЗ ИЗМЕНЕНИЙ) -->
         <div class="album-content" id="album-1">
             <div class="album-cover"><img src="cover1.jpg" alt=""></div>
             <div class="album-info">
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
-                    <!-- ПЛЕЕР -->
                     <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track1.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
@@ -703,7 +560,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 2 -->
         <div class="album-content" id="album-2">
             <div class="album-cover"><img src="cover2.jpg" alt=""></div>
             <div class="album-info">
@@ -720,7 +576,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 3 -->
         <div class="album-content" id="album-3">
             <div class="album-cover"><img src="cover3.jpg" alt=""></div>
             <div class="album-info">
@@ -737,7 +592,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 4 -->
         <div class="album-content" id="album-4">
             <div class="album-cover"><img src="cover4.jpg" alt=""></div>
             <div class="album-info">
@@ -754,7 +608,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 5 -->
         <div class="album-content" id="album-5">
             <div class="album-cover"><img src="cover5.jpg" alt=""></div>
             <div class="album-info">
@@ -771,7 +624,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 6 -->
         <div class="album-content" id="album-6">
             <div class="album-cover"><img src="cover6.jpg" alt=""></div>
             <div class="album-info">
@@ -788,7 +640,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 7 -->
         <div class="album-content" id="album-7">
             <div class="album-cover"><img src="cover7.jpg" alt=""></div>
             <div class="album-info">
@@ -805,7 +656,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 8 -->
         <div class="album-content" id="album-8">
             <div class="album-cover"><img src="cover8.jpg" alt=""></div>
             <div class="album-info">
@@ -822,7 +672,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 9 -->
         <div class="album-content" id="album-9">
             <div class="album-cover"><img src="cover9.jpg" alt=""></div>
             <div class="album-info">
@@ -839,13 +688,36 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 10 -->
+        <!-- АЛЬБОМ 10 С ТРЕКЛИСТОМ -->
         <div class="album-content" id="album-10">
             <div class="album-cover"><img src="cover10.jpg" alt=""></div>
             <div class="album-info">
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
+                    
+                    <div class="tracklist-container">
+                        <div class="track-item active" data-src="heartbreak.mp3">&lt;/3 <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="5_dney_nazad.mp3">5 дней назад <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="323.mp3">323 <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="antipsychiatry.mp3">antipsychiatry.org <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="beatitudo.mp3">beatitudo in mundo vivimus <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="hirocore.mp3">ＨＩＲＯＣＯＲＥ ４ ＭＥ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="hogt.mp3">högt <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="julia.mp3">JULIΛ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="kto_ona.mp3">КТØ ØНΔ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="mertsaniye.mp3">MERTSANIYE <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="paper_planez.mp3">PΔPΞR PLΔNΞZ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="seems_quiet.mp3">seems a little quiet over here <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sehnsucht.mp3">Sehnsucht <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="umirat.mp3">УМИРΔ†Ь (feat. СКОРБЬ) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="zaklinanie.mp3">zaklinanie <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="nikto_ne_vernetsya.mp3">НИК†Ø НΞ ВΞРНΞ†СЯ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="julia_jp.mp3">ジュリア <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="scum_scum.mp3">スカムスカム <span class="eq"><span></span><span></span><span></span></span></div>
+                    </div>
+                    
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="heartbreak.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://band.link/cfmw" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -855,7 +727,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 11 -->
         <div class="album-content" id="album-11">
             <div class="album-cover"><img src="cover11.jpg" alt=""></div>
             <div class="album-info">
@@ -872,7 +743,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 12 -->
         <div class="album-content" id="album-12">
             <div class="album-cover"><img src="cover12.jpg" alt=""></div>
             <div class="album-info">
@@ -889,13 +759,61 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 13 -->
+        <!-- АЛЬБОМ 13 С ТРЕКЛИСТОМ -->
         <div class="album-content" id="album-13">
             <div class="album-cover"><img src="cover13.jpg" alt=""></div>
             <div class="album-info">
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">ピンクのブレスレット</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="discography.zip" download>Download</a></div>
+
+                    <div class="tracklist-container">
+                        <div class="track-item active" data-src="we_can_be_lovers.mp3">(╯︵╰,) we can be lovers <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="i_wanna_die.mp3">I Wanna Die <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sleepless_night.mp3">٠ 眠れぬ夜の謎 ٠ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="a_dead_moth.mp3">a dead moth <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="changes.mp3">changes <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="cilia.mp3">CILIA <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="drown_me.mp3">drown me in kerosene <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="find_me.mp3">find me in the sea <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="glassy_child.mp3">Glassy Child <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="her_uncertainty.mp3">her uncertainty feeds my torment <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="hydrangea.mp3">HYDRΔNGΞΔ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="i_luv333u.mp3">I luv333u <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="krasota.mp3">KRΛSOTΛ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="cuneiform.mp3">kyo͞oˈnēəˌfôrm,ˈkyo͞on(ē)ə-12310. (feat. deadrazy) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="l_sss.mp3">L・SSS <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="lonely_cloud.mp3">lonely cloud <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="mechta.mp3">мечта <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="dream.mp3">dream <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="purify_me.mp3">purify me <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="puritygarden.mp3">puritygarden <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="romanova.mp3">Romanova <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="spooky.mp3">spooky <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sixteen.mp3">SIXTEEN <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sunflower.mp3">sunflower <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="ts_geisha.mp3">Trans-Sexual Geisha <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="trying_to_be_innocent.mp3">Trying to Be Innocent (feat. deadrazy & Shirenvasea) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="uhri.mp3">Uhri <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="urbat.mp3">Urbat' <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vanity.mp3">VΛNITY <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vi_alalm.mp3">Vi Alalm Ohsen <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vv.mp3">VV <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vvalensiia.mp3">VValensiiA <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="we_belong.mp3">We Belong Together <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="wept.mp3">Wept <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="xvi_xvii.mp3">XVI XVII <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="zerkalo.mp3">гниющее отвратительное смотровое зеркало (feat. deadrazy) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="spectral.mp3">ѕρɘcτral <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="klub.mp3">клуб разбитых надежд <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="die_young.mp3">ダイ・ヤング <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="down_in_falling.mp3">ダウン In falling <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="dont_forget.mp3">忘れないで <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="think_deeply.mp3">深く考えてくれ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="suidgrens.mp3">粘膜・suidgrens 03 <span class="eq"><span></span><span></span><span></span></span></div>
+                    </div>
+
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="we_can_be_lovers.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
                     <a href="https://band.link/cfmb" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
@@ -904,18 +822,16 @@
                 </div>
             </div>
         </div>
-    </div> <!-- Закрытие display-area -->
+    </div>
 
-    <!-- АФИШИ (EVENTS) -->
+    <!-- АФИШИ -->
     <div id="events-area">
         <h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2>
         <div class="events-grid">
-            <!-- Пример афиши 1 -->
             <div class="event-card">
                 <img src="poster1.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
                 <div class="event-date">15.10.2024 / MOSCOW</div>
             </div>
-            <!-- Пример афиши 2 -->
             <div class="event-card">
                 <img src="poster2.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
                 <div class="event-date">02.11.2024 / ST. PETERSBURG</div>
@@ -931,7 +847,6 @@
             body.classList.toggle('dark-mode');
         });
 
-        // ЛОГИКА ЗАГРУЗКИ (PRELOADER), ТЕКСТА И ASCII
         const preloader = document.getElementById('preloader');
         const typingContainer = document.getElementById('typing-container');
         const asciiArt = document.getElementById('ascii-art');
@@ -972,7 +887,6 @@
             asciiArt.classList.add('show-art');
         }
 
-        // ЛОГИКА ИНТЕРФЕЙСА, ПЛЕЕРА И ЭКВАЛАЙЗЕРА
         const catalogItems = document.querySelectorAll('.catalog-item:not(.special-link)');
         const albumContents = document.querySelectorAll('.album-content');
         const displayArea = document.getElementById('display-area');
@@ -981,41 +895,61 @@
         const logo = document.getElementById('logo-container');
         const btnEvents = document.getElementById('btn-events');
         
-        // Находим все аудиоплееры
         const audioPlayers = document.querySelectorAll('.audio-player');
+        const trackItems = document.querySelectorAll('.track-item');
 
-        // ИСПРАВЛЕННОЕ УПРАВЛЕНИЕ АНИМАЦИЕЙ
+        // ЛОГИКА ТРЕКЛИСТА: КЛИК ПО ТРЕКУ В СПИСКЕ
+        trackItems.forEach(track => {
+            track.addEventListener('click', function() {
+                const parentAlbum = this.closest('.album-content');
+                const audioPlayer = parentAlbum.querySelector('.audio-player');
+                const fileSrc = this.getAttribute('data-src');
+                
+                parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('active', 'playing'));
+                
+                this.classList.add('active');
+                
+                if (audioPlayer.getAttribute('src') !== fileSrc) {
+                    audioPlayer.src = fileSrc;
+                }
+                
+                audioPlayer.play();
+            });
+        });
+
+        // УПРАВЛЕНИЕ МУЗЫКОЙ И ЭКВАЛАЙЗЕРОМ (ИСПРАВЛЕНО)
         audioPlayers.forEach(player => {
-            // Находим к какому альбому относится этот конкретный плеер
             const parentAlbum = player.closest('.album-content');
             let associatedCatalogItem = null;
 
             if (parentAlbum) {
-                const targetId = parentAlbum.id; // например "album-11"
-                // Ищем пункт меню, который ссылается на этот альбом
+                const targetId = parentAlbum.id; 
                 associatedCatalogItem = document.querySelector(`.catalog-item[data-target="${targetId}"]`);
             }
 
             player.addEventListener('play', (e) => {
-                // Ставим на паузу остальные треки
                 audioPlayers.forEach(otherPlayer => {
-                    if (otherPlayer !== e.target) {
-                        otherPlayer.pause();
-                    }
+                    if (otherPlayer !== e.target) otherPlayer.pause();
                 });
 
-                // Убираем анимацию у всех пунктов меню
                 catalogItems.forEach(item => item.classList.remove('playing'));
-                
-                // Включаем анимацию только у нужного пункта
-                if (associatedCatalogItem) {
-                    associatedCatalogItem.classList.add('playing');
+                if (associatedCatalogItem) associatedCatalogItem.classList.add('playing');
+
+                if (parentAlbum) {
+                    let activeTrack = parentAlbum.querySelector('.track-item.active');
+                    if(!activeTrack) {
+                        activeTrack = parentAlbum.querySelector('.track-item');
+                        if(activeTrack) activeTrack.classList.add('active');
+                    }
+                    parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('playing'));
+                    if(activeTrack) activeTrack.classList.add('playing');
                 }
             });
 
             player.addEventListener('pause', () => {
-                if (associatedCatalogItem) {
-                    associatedCatalogItem.classList.remove('playing');
+                if (associatedCatalogItem) associatedCatalogItem.classList.remove('playing');
+                if (parentAlbum) {
+                    parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('playing'));
                 }
             });
         });
@@ -1039,10 +973,8 @@
             }
         }
 
-        // КЛИК НА АЛЬБОМ
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
-                
                 if (defaultView) defaultView.style.display = 'none';
                 eventsArea.style.display = 'none';
                 btnEvents.classList.remove('active');
@@ -1062,7 +994,6 @@
             });
         });
 
-        // КЛИК НА РАЗДЕЛ "EVENTS / LIVE"
         btnEvents.addEventListener('click', (e) => {
             if (defaultView) defaultView.style.display = 'none';
             displayArea.style.display = 'none';
@@ -1076,7 +1007,6 @@
             alignContentBlock(btnEvents, eventsArea);
         });
 
-        // КЛИК НА ЛОГОТИП (Возврат на главную)
         logo.addEventListener('click', (e) => {
             e.preventDefault(); 
             
