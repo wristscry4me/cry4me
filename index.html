@@ -384,6 +384,22 @@
             .album-info { height: auto; gap: 40px; width: 100%; }
             .tracklist-container { max-height: 300px; }
             #footer-info { position: static; text-align: left; padding: 30px; }
+            
+            /* ФИКС ЛОГОТИПА И КНОПКИ ТЕМЫ ДЛЯ ТЕЛЕФОНА */
+            #logo-container, #theme-toggle {
+                position: fixed !important;
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                z-index: 999;
+            }
+            #logo-container {
+                top: 20px !important;
+                left: 20px !important;
+            }
+            #theme-toggle {
+                top: 20px !important;
+                right: 20px !important;
+            }
         }
     </style>
 </head>
@@ -842,7 +858,7 @@
                 <a href="https://gorenight.ticketscloud.org/" target="_blank">
                     <img src="eclipse_poster.jpg" alt="Eclipse Club Moscow Poster" onerror="this.style.display='none'">
                 </a>
-                <div class="event-date">24.04.2026 / MOSCOW<br>КЛУБ ECLIPSE</div>
+                <div class="event-date">25.04.2026 / MOSCOW<br>КЛУБ ECLIPSE</div>
                 <div class="links" style="margin-top: 10px;">
                     <a href="https://gorenight.ticketscloud.org/" target="_blank">BUY TICKETS</a>
                 </div>
