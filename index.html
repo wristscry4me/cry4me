@@ -10,7 +10,7 @@
     <meta property="og:image" content="cover1.jpg">
     <meta property="og:type" content="website">
     
-    <!-- ИКОНКА ВО ВКЛАДКЕ БРАУЗЕРА -->
+    <!-- ИКОНКА ВО ВКЛАДКЕ БРАУЗЕРА (ФАВИКОН) -->
     <link rel="icon" href="favicon.png" type="image/png">
 
     <title>cry 4 me | catalog</title>
@@ -59,50 +59,6 @@
         }
 
         a:hover { opacity: 0.5; }
-
-        /* ДИАГОНАЛЬНАЯ АНИМАЦИЯ ФОНА "WHO CARES" */
-        #who-cares-bg {
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200vw;
-            height: 200vh;
-            z-index: 5; /* Позади всего контента */
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            transform: rotate(-25deg); /* Диагональный наклон */
-            opacity: 0.05; /* Очень прозрачный, чтобы не резал глаза */
-            user-select: none;
-            overflow: hidden;
-        }
-
-        body.dark-mode #who-cares-bg {
-            opacity: 0.03; /* В темной теме делаем еще прозрачнее */
-        }
-
-        .wc-line {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 32px;
-            font-weight: bold;
-            white-space: nowrap;
-            margin-bottom: 15px;
-            color: var(--text-color);
-            text-transform: none;
-            letter-spacing: 0;
-            animation: marqueeDiag 30s linear infinite;
-        }
-
-        .wc-line:nth-child(even) {
-            animation-direction: reverse;
-            margin-left: -150px; 
-        }
-
-        @keyframes marqueeDiag {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-15%); }
-        }
 
         /* ЭКРАН ЗАГРУЗКИ */
         #preloader {
@@ -234,7 +190,7 @@
 
         .catalog-item.playing .eq, .track-item.playing .eq { display: inline-flex; }
 
-        /* ДЕФОЛТНЫЙ ВИД С КАРТИНКАМИ */
+        /* ДЕФОЛТНЫЙ ВИД */
         #default-view {
             position: fixed;
             top: 50%;
@@ -244,39 +200,6 @@
             align-items: center; 
             gap: 50px; 
             z-index: 30;
-        }
-
-        /* ПЛАВАЮЩИЕ КАРТИНКИ */
-        .aesthetic-images {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none; /* Чтобы не перекрывали клики */
-            z-index: 10; /* За текстом, но поверх фона */
-        }
-
-        .a-img {
-            position: absolute;
-            opacity: 0.12; /* Полупрозрачные */
-            filter: grayscale(100%) contrast(1.2); /* ЧБ фильтр */
-            transition: opacity 0.5s ease, filter 0.5s;
-        }
-
-        body.dark-mode .a-img {
-            opacity: 0.08; /* В темной теме еще прозрачнее */
-            filter: grayscale(100%) invert(1); /* Инвертируем цвета в темной теме */
-        }
-
-        /* Размещаем и анимируем фотки */
-        .a-img-1 { top: 10%; right: 15%; width: 280px; animation: floatImg 12s ease-in-out infinite alternate; }
-        .a-img-2 { bottom: 15%; left: 35%; width: 220px; animation: floatImg 15s ease-in-out infinite alternate-reverse; }
-        .a-img-3 { top: 50%; left: 10%; width: 250px; animation: floatImg 10s ease-in-out infinite alternate; }
-
-        @keyframes floatImg {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(20px) rotate(2deg); }
         }
 
         /* БЕГУЩАЯ СТРОКА */
@@ -317,10 +240,9 @@
             white-space: normal;
             opacity: 0.4; 
             text-align: left; 
-            z-index: 20;
         }
 
-        #ascii-wrapper { width: 100%; overflow: hidden; display: flex; justify-content: flex-start; z-index: 20; }
+        #ascii-wrapper { width: 100%; overflow: hidden; display: flex; justify-content: flex-start; }
 
         #ascii-art {
             font-family: 'Courier New', Courier, monospace; 
@@ -452,11 +374,6 @@
             #preloader { display: none; }
             #catalog-list { position: static; height: auto; padding: 100px 30px 30px 30px; gap: 20px; }
             .catalog-item.active::after { display: none; } 
-            
-            /* На телефоне картинки скрываем, чтобы не было каши */
-            .aesthetic-images { display: none; }
-            /* Анимацию "Who cares" оставляем, она классная на фоне */
-
             #default-view { position: static; transform: none; flex-direction: column; align-items: flex-start; width: 100%; margin: 0 auto 50px auto; padding: 0 30px; box-sizing: border-box; }
             #marquee-container { position: static; width: 100%; margin-top: 20px; }
             #typing-container { width: 100%; height: auto; margin-bottom: 20px; }
@@ -507,20 +424,11 @@
 </head>
 <body>
 
-    <!-- АНИМИРОВАННЫЙ ФОН WHO CARES -->
-    <div id="who-cares-bg">
-        <div class="wc-line">Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares.</div>
-        <div class="wc-line">Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares.</div>
-        <div class="wc-line">Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares.</div>
-        <div class="wc-line">Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares.</div>
-        <div class="wc-line">Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares.</div>
-        <div class="wc-line">Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares. Who cares! WHO CARES!! Who cares.</div>
-    </div>
-
     <div id="preloader">
         <span class="preloader-text">www.cry4me.com</span>
     </div>
 
+    <!-- ГЛАВНЫЙ ЛОГОТИП (НА САЙТЕ) -->
     <a href="#" id="logo-container">
         <img src="logo.png" alt="logo" onerror="this.style.display='none'">
     </a>
@@ -554,14 +462,6 @@
 
     <!-- СТАРТОВЫЙ ЭКРАН -->
     <div id="default-view">
-        
-        <!-- ВАШИ 3 АТМОСФЕРНЫЕ ФОТОГРАФИИ -->
-        <div class="aesthetic-images">
-            <img src="manga.jpg" class="a-img a-img-1" alt="" onerror="this.style.display='none'">
-            <img src="fence.jpg" class="a-img a-img-2" alt="" onerror="this.style.display='none'">
-            <img src="girl.jpg" class="a-img a-img-3" alt="" onerror="this.style.display='none'">
-        </div>
-
         <div id="typing-container"></div>
         <div id="ascii-wrapper">
             <div id="ascii-art">
@@ -1015,6 +915,7 @@
         function startTyping() {
             let typeIndex = 0;
             isTyped = true;
+            // ОПТИМИЗАЦИЯ: заменено innerHTML на textContent
             typingContainer.textContent = '';
             
             function typeNext() {
@@ -1119,6 +1020,7 @@
 
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
+                // ИСПРАВЛЕНИЕ: Ставим музыку на паузу при переключении альбома
                 audioPlayers.forEach(p => p.pause());
 
                 if (defaultView) defaultView.style.display = 'none';
@@ -1141,6 +1043,7 @@
         });
 
         btnEvents.addEventListener('click', (e) => {
+            // ИСПРАВЛЕНИЕ: Ставим музыку на паузу при открытии афиш
             audioPlayers.forEach(p => p.pause());
 
             if (defaultView) defaultView.style.display = 'none';
@@ -1158,6 +1061,7 @@
         logo.addEventListener('click', (e) => {
             e.preventDefault(); 
             
+            // ИСПРАВЛЕНИЯ: пауза и плавный скролл наверх (UX фикс для телефонов)
             audioPlayers.forEach(p => p.pause());
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
