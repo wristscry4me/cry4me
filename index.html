@@ -276,13 +276,19 @@
         .album-content { display: none; align-items: flex-start; gap: 30px; height: 100%; }
         .album-content.active { display: flex; animation: fadeIn 0.5s ease; }
 
+        /* СЕТКА ДЛЯ АФИШ */
         .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 30px;
             max-height: 70vh;
             overflow-y: auto;
             padding-bottom: 50px;
+        }
+
+        .event-card {
+            width: 100%;
+            max-width: 250px;
         }
 
         .event-card img {
@@ -293,7 +299,13 @@
             transition: filter 0.3s ease;
         }
         .event-card img:hover { filter: grayscale(0%); }
-        .event-date { margin-top: 10px; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+        
+        .event-date { 
+            margin-top: 10px; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            line-height: 1.4;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -550,7 +562,6 @@
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div>
                     <div class="links"><a href="https://mega.nz/file/7pxRhYqS#NIH3_xa3OIqlFNjyqovgnIChZc-QHb_lNar8urZWjSQ" target="_blank">Download</a></div>
-                    <!-- ВЕРНУЛ track1.mp3 КАК БЫЛО ИЗНАЧАЛЬНО -->
                     <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track1.mp3" type="audio/mpeg"></audio>
                 </div>
                 <div class="info-bottom">
@@ -571,8 +582,8 @@
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                    <a href="https://open.spotify.com/album/3YBpRN4y9Kz7Q8a6BWzSEB" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/antistressworldwide-single/1858269883" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
             </div>
         </div>
@@ -587,8 +598,8 @@
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                    <a href="https://open.spotify.com/album/1qHkmNulBnOvD36xY85dbU" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/selfharmangel-single/1851420817" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
             </div>
         </div>
@@ -603,8 +614,8 @@
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                    <a href="https://open.spotify.com/album/6wY96LslZvgow4WNm2b3X1" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/fck-everything-single/1851706247" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
             </div>
         </div>
@@ -667,8 +678,8 @@
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                    <a href="https://open.spotify.com/album/2dEccEtu1pyp2uSvMso7lR" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/notyours-single/1835788124" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
             </div>
         </div>
@@ -695,7 +706,6 @@
             <div class="album-info">
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p><p>Written & Produced by cry 4 me</p></div>
-                    <div class="links"><a href="https://mega.nz/file/zpIHTarQ#M5hrH0Dj6AZ-MtbmucuPeUoSVD1I5PVFrN6NgLjl9-8" target="_blank">Download</a></div>
                     
                     <div class="tracklist-container">
                         <div class="track-item active" data-src="heartbreak.mp3">&lt;/3 <span class="eq"><span></span><span></span><span></span></span></div>
@@ -738,8 +748,8 @@
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                    <a href="https://open.spotify.com/album/1xiCfL0NQMThvb87DN9XRe" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/sharpest-pearl-single/1791541196" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
             </div>
         </div>
@@ -754,8 +764,8 @@
                 </div>
                 <div class="info-bottom">
                     <a href="#" target="_blank" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
-                    <a href="#" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                    <a href="https://open.spotify.com/album/380mgLficwhgE0GSkpB1E7" target="_blank" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/forgive-me-single/1791541093" target="_blank" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
                 </div>
             </div>
         </div>
@@ -766,7 +776,6 @@
             <div class="album-info">
                 <div class="info-top">
                     <div class="info-block"><p class="info-title">ピンクのブレスレット</p><p>Written & Produced by cry 4 me</p></div>
-                    <div class="links"><a href="https://mega.nz/file/CsYkjQSR#Z1U2A8d6xWwlftNvoHj4Kz9xVw9QiFYI8sGTTVFHHfA" target="_blank">Download</a></div>
 
                     <div class="tracklist-container">
                         <div class="track-item active" data-src="we_can_be_lovers.mp3">(╯︵╰,) we can be lovers <span class="eq"><span></span><span></span><span></span></span></div>
@@ -830,12 +839,13 @@
         <h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2>
         <div class="events-grid">
             <div class="event-card">
-                <img src="poster1.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
-                <div class="event-date">15.10.2024 / MOSCOW</div>
-            </div>
-            <div class="event-card">
-                <img src="poster2.jpg" alt="Live Event Poster" onerror="this.style.display='none'">
-                <div class="event-date">02.11.2024 / ST. PETERSBURG</div>
+                <a href="https://gorenight.ticketscloud.org/" target="_blank">
+                    <img src="eclipse_poster.jpg" alt="Eclipse Club Moscow Poster" onerror="this.style.display='none'">
+                </a>
+                <div class="event-date">25.04.2026 / MOSCOW<br>КЛУБ ECLIPSE</div>
+                <div class="links" style="margin-top: 10px;">
+                    <a href="https://gorenight.ticketscloud.org/" target="_blank">BUY TICKETS</a>
+                </div>
             </div>
         </div>
     </div>
