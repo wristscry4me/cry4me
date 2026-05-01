@@ -298,6 +298,7 @@
             filter: grayscale(100%);
             transition: filter 0.3s ease;
         }
+
         .event-card img:hover { filter: grayscale(0%); }
         
         .event-date { 
@@ -313,8 +314,11 @@
         }
 
         /* ОБЛОЖКА И ИНФО */
-        .album-cover { width: 400px; height: 400px; background-color: var(--line-color); flex-shrink: 0; z-index: 10; }
+        .album-cover { width: 400px; height: 400px; background-color: var(--line-color); flex-shrink: 0; z-index: 10; overflow: hidden; }
         .album-cover img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* ЗАГАДОЧНАЯ ОБЛОЖКА */
+        .mystery-blur img { filter: blur(40px) grayscale(100%); transform: scale(1.1); }
 
         .album-info {
             display: flex;
@@ -378,23 +382,21 @@
             #marquee-container { position: static; width: 100%; margin-top: 20px; }
             #typing-container { width: 100%; height: auto; margin-bottom: 20px; }
             
-            /* ИСПРАВЛЕНИЕ ASCII ДЛЯ ТЕЛЕФОНОВ */
+            /* ИСПРАВЛЕННЫЙ ASCII ДЛЯ ТЕЛЕФОНОВ - БОЛЬШЕ НЕ НУЖНО ЗУМИТЬ */
             #ascii-wrapper {
                 width: 100%;
-                height: 180px; 
-                position: relative;
-                overflow: hidden;
-                margin-top: 10px;
+                height: auto;
+                min-height: 150px;
+                display: block;
+                overflow-x: hidden;
             }
             #ascii-art { 
-                position: absolute;
-                top: 0;
-                left: -20px;
-                font-size: 10px; 
-                line-height: 10px; 
-                transform: scale(0.2); 
-                transform-origin: top left; 
-                width: auto; 
+                font-size: 1.2vw; /* Динамический размер шрифта под экран */
+                line-height: 1.2vw;
+                opacity: 1;
+                display: block;
+                width: 100%;
+                text-align: left;
             }
 
             #display-area, #events-area { position: static !important; width: 100%; padding: 0 30px 50px 30px; }
@@ -404,21 +406,14 @@
             .tracklist-container { max-height: 300px; }
             #footer-info { position: static; text-align: left; padding: 30px; }
             
-            /* ФИКС ЛОГОТИПА И КНОПКИ ТЕМЫ ДЛЯ ТЕЛЕФОНА */
             #logo-container, #theme-toggle {
                 position: fixed !important;
                 -webkit-transform: translateZ(0);
                 transform: translateZ(0);
                 z-index: 999;
             }
-            #logo-container {
-                top: 20px !important;
-                left: 20px !important;
-            }
-            #theme-toggle {
-                top: 20px !important;
-                right: 20px !important;
-            }
+            #logo-container { top: 20px !important; left: 20px !important; }
+            #theme-toggle { top: 20px !important; right: 20px !important; }
         }
     </style>
 </head>
@@ -428,7 +423,7 @@
         <span class="preloader-text">www.cry4me.com</span>
     </div>
 
-    <!-- ГЛАВНЫЙ ЛОГОТИП (НА САЙТЕ) -->
+    <!-- ГЛАВНЫЙ ЛОГОТИП -->
     <a href="#" id="logo-container">
         <img src="logo.png" alt="logo" onerror="this.style.display='none'">
     </a>
@@ -443,6 +438,9 @@
     </div>
 
     <nav id="catalog-list">
+        <!-- ЗАГАДОЧНОЕ ПРЕВЬЮ -->
+        <div class="catalog-item" data-target="album-preview" style="letter-spacing: 4px; font-weight: bold;">[ 2026 ] <span class="eq"><span></span><span></span><span></span></span></div>
+        
         <div class="catalog-item" data-target="album-1">cachalot remix <span class="eq"><span></span><span></span><span></span></span></div>
         <div class="catalog-item" data-target="album-2">antistressworldwide <span class="eq"><span></span><span></span><span></span></span></div>
         <div class="catalog-item" data-target="album-3">selfharmangel <span class="eq"><span></span><span></span><span></span></span></div>
@@ -460,17 +458,10 @@
         <div class="catalog-item special-link" id="btn-events">[ LIVE / DJ SETS ]</div>
     </nav>
 
-    <!-- СТАРТОВЫЙ ЭКРАН -->
     <div id="default-view">
         <div id="typing-container"></div>
         <div id="ascii-wrapper">
-            <div id="ascii-art">
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                           
-                                                                                                                             .                                                                                                                             
+            <div id="ascii-art">.                                                                                                                             
                                                                                                                              :                                                                                                                             
                                                                                                           .     :          .:.                                                                                                                             
                                                                                                         :         -::..   :  -                                                                                                                             
@@ -591,6 +582,25 @@
     <!-- КОНТЕНТ АЛЬБОМОВ -->
     <div id="display-area">
         
+        <!-- ПРЕВЬЮ НОВОГО АЛЬБОМА -->
+        <div class="album-content" id="album-preview">
+            <div class="album-cover mystery-blur"><img src="cover1.jpg" alt=""></div> <!-- Укажите любую картинку, она размоется -->
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block">
+                        <p class="info-title" style="font-size: 20px;">[ 2026 ]</p>
+                        <p>TRANSMISSION_PENDING...</p>
+                        <p style="margin-top: 20px; opacity: 0.5;">A new chapter is approaching.</p>
+                    </div>
+                    <audio class="audio-player mystery-track" preload="none"><source src="preview_ambient.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom" style="opacity: 0.2; pointer-events: none;">
+                    <a href="#" class="platform-btn"><img src="spotify.png" alt=""></a>
+                    <a href="#" class="platform-btn"><img src="apple.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+
         <div class="album-content" id="album-1">
             <div class="album-cover"><img src="cover1.jpg" alt=""></div>
             <div class="album-info">
@@ -735,7 +745,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 10 С ТРЕКЛИСТОМ -->
         <div class="album-content" id="album-10">
             <div class="album-cover"><img src="cover10.jpg" alt=""></div>
             <div class="album-info">
@@ -805,7 +814,6 @@
             </div>
         </div>
 
-        <!-- АЛЬБОМ 13 С ТРЕКЛИСТОМ -->
         <div class="album-content" id="album-13">
             <div class="album-cover"><img src="cover13.jpg" alt=""></div>
             <div class="album-info">
@@ -853,7 +861,7 @@
                         <div class="track-item" data-src="klub.mp3">клуб разбитых надежд <span class="eq"><span></span><span></span><span></span></span></div>
                         <div class="track-item" data-src="die_young.mp3">ダイ・ヤング <span class="eq"><span></span><span></span><span></span></span></div>
                         <div class="track-item" data-src="down_in_falling.mp3">ダウン In falling <span class="eq"><span></span><span></span><span></span></span></div>
-                        <div class="track-item" data-src="dont_forget.mp3">忘れないで <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="dont_forget.mp3">忘れないде <span class="eq"><span></span><span></span><span></span></span></div>
                         <div class="track-item" data-src="think_deeply.mp3">深く考えてくれ <span class="eq"><span></span><span></span><span></span></span></div>
                         <div class="track-item" data-src="suidgrens.mp3">粘膜・suidgrens 03 <span class="eq"><span></span><span></span><span></span></span></div>
                     </div>
@@ -873,15 +881,7 @@
     <div id="events-area">
         <h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2>
         <div class="events-grid">
-            <div class="event-card">
-                <a href="https://gorenight.ticketscloud.org/" target="_blank" rel="noopener noreferrer">
-                    <img src="eclipse_poster.jpg" alt="Eclipse Club Moscow Poster" onerror="this.style.display='none'">
-                </a>
-                <div class="event-date">24.04.2026 / MOSCOW<br>КЛУБ ECLIPSE</div>
-                <div class="links" style="margin-top: 10px;">
-                    <a href="https://gorenight.ticketscloud.org/" target="_blank" rel="noopener noreferrer">BUY TICKETS</a>
-                </div>
-            </div>
+            <!-- Блок пуст, готов для новых афиш -->
         </div>
     </div>
 
@@ -915,7 +915,6 @@
         function startTyping() {
             let typeIndex = 0;
             isTyped = true;
-            // ОПТИМИЗАЦИЯ: заменено innerHTML на textContent
             typingContainer.textContent = '';
             
             function typeNext() {
@@ -952,13 +951,12 @@
                 const fileSrc = this.getAttribute('data-src');
                 
                 parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('active', 'playing'));
-                
                 this.classList.add('active');
                 
                 if (audioPlayer.getAttribute('src') !== fileSrc) {
                     audioPlayer.src = fileSrc;
                 }
-                
+                audioPlayer.volume = 1.0; 
                 audioPlayer.play();
             });
         });
@@ -1005,23 +1003,20 @@
                     targetArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 100);
             }
-
             if(window.innerWidth > 900) {
                 const rect = item.getBoundingClientRect();
                 let calculatedTop = rect.top;
-                
                 if (calculatedTop + 400 > window.innerHeight - 50) {
                     calculatedTop = window.innerHeight - 450; 
                 }
-                
                 targetArea.style.top = calculatedTop + 'px';
             }
         }
 
         catalogItems.forEach(item => {
             item.addEventListener('click', (e) => {
-                // ИСПРАВЛЕНИЕ: Ставим музыку на паузу при переключении альбома
-                audioPlayers.forEach(p => p.pause());
+                // ПАУЗА ВСЕХ ПЛЕЕРОВ ПРИ ПЕРЕКЛЮЧЕНИИ
+                audioPlayers.forEach(p => { p.pause(); p.currentTime = 0; });
 
                 if (defaultView) defaultView.style.display = 'none';
                 eventsArea.style.display = 'none';
@@ -1038,40 +1033,37 @@
                 displayArea.style.display = 'block';
                 targetAlbum.classList.add('active');
 
+                // ОСОБАЯ ЛОГИКА ДЛЯ ПРЕВЬЮ
+                if (targetId === 'album-preview') {
+                    const previewAudio = targetAlbum.querySelector('.audio-player');
+                    previewAudio.volume = 0.3; // Тихий звук для эмбиента
+                    previewAudio.play();
+                }
+
                 alignContentBlock(item, displayArea);
             });
         });
 
         btnEvents.addEventListener('click', (e) => {
-            // ИСПРАВЛЕНИЕ: Ставим музыку на паузу при открытии афиш
             audioPlayers.forEach(p => p.pause());
-
             if (defaultView) defaultView.style.display = 'none';
             displayArea.style.display = 'none';
-
             catalogItems.forEach(i => i.classList.remove('active'));
             albumContents.forEach(c => c.classList.remove('active'));
-
             btnEvents.classList.add('active');
             eventsArea.style.display = 'block';
-
             alignContentBlock(btnEvents, eventsArea);
         });
 
         logo.addEventListener('click', (e) => {
             e.preventDefault(); 
-            
-            // ИСПРАВЛЕНИЯ: пауза и плавный скролл наверх (UX фикс для телефонов)
             audioPlayers.forEach(p => p.pause());
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
             displayArea.style.display = 'none';
             eventsArea.style.display = 'none';
-
             catalogItems.forEach(i => i.classList.remove('active'));
             albumContents.forEach(c => c.classList.remove('active'));
             btnEvents.classList.remove('active');
-            
             if (defaultView) {
                 defaultView.style.display = 'flex'; 
                 triggerAsciiAnimation(); 
