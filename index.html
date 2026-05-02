@@ -60,18 +60,13 @@
 
         a:hover { opacity: 0.5; }
 
-        /* ЭКРАН ЗАГРУЗКИ */
+        /* --- ЭКРАН ЗАГРУЗКИ --- */
         #preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: var(--bg-color);
             z-index: 100001;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             transition: opacity 0.8s ease, visibility 0.8s ease;
         }
 
@@ -86,7 +81,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- ЭКРАН ВИЗУАЛЬНОЙ НОВЕЛЛЫ (INTRO) --- */
+        /* --- ЭКРАН ВИЗУАЛЬНОЙ НОВЕЛЛЫ --- */
         #vn-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -104,10 +99,10 @@
         #ascii-intro-container {
             white-space: pre;
             font-family: 'Courier New', Courier, monospace;
-            font-size: min(0.55vh, 0.55vw); 
+            font-size: min(0.48vh, 0.48vw); 
             line-height: 1.1;
             letter-spacing: 0;
-            margin-bottom: 5vh; 
+            margin-bottom: 5vh;
             text-align: center;
             user-select: none;
         }
@@ -121,8 +116,7 @@
 
         #typing-text-intro {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 18px; letter-spacing: 2px; 
-            font-weight: 100; 
+            font-size: 18px; letter-spacing: 2px; font-weight: 100;
             margin-bottom: 25px; text-align: center;
         }
 
@@ -133,7 +127,6 @@
         .vn-btn {
             background: none; border: 1px solid var(--text-color); color: var(--text-color);
             padding: 12px 40px; font-family: inherit; cursor: pointer; transition: all 0.3s; font-size: 12px;
-            font-weight: 100;
         }
         .vn-btn:hover { background: var(--text-color); color: var(--bg-color); }
 
@@ -431,7 +424,6 @@
             #marquee-container { position: static; width: 100%; margin-top: 20px; }
             #typing-container { width: 100%; height: auto; margin-bottom: 20px; }
             
-            /* ИСПРАВЛЕНИЕ ASCII ДЛЯ ТЕЛЕФОНОВ */
             #ascii-wrapper {
                 width: 100%;
                 height: 180px; 
@@ -440,13 +432,9 @@
                 margin-top: 10px;
             }
             #ascii-art { 
-                position: absolute;
-                top: 0;
-                left: -20px;
-                font-size: 6px; 
-                line-height: 6px; 
-                transform: scale(0.4); 
-                transform-origin: top left; 
+                position: absolute; top: 0; left: -20px;
+                font-size: 6px; line-height: 6px; 
+                transform: scale(0.4); transform-origin: top left; 
                 width: auto; 
             }
 
@@ -459,8 +447,7 @@
             
             #logo-container, #theme-toggle {
                 position: fixed !important;
-                -webkit-transform: translateZ(0);
-                transform: translateZ(0);
+                -webkit-transform: translateZ(0); transform: translateZ(0);
                 z-index: 999;
             }
             #logo-container { top: 20px !important; left: 20px !important; }
@@ -488,6 +475,7 @@
     </div>
 
     <div id="main-site" style="display: none; opacity: 0;">
+        <!-- ГЛАВНЫЙ ЛОГОТИП -->
         <a href="#" id="logo-container">
             <img src="logo.png" alt="logo" onerror="this.style.display='none'">
         </a>
