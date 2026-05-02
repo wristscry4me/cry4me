@@ -60,13 +60,18 @@
 
         a:hover { opacity: 0.5; }
 
-        /* --- ЭКРАН ЗАГРУЗКИ --- */
+        /* ЭКРАН ЗАГРУЗКИ */
         #preloader {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background-color: var(--bg-color);
-            z-index: 100001;
-            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             transition: opacity 0.8s ease, visibility 0.8s ease;
         }
 
@@ -80,54 +85,6 @@
             0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
         }
-
-        /* --- ЭКРАН ВИЗУАЛЬНОЙ НОВЕЛЛЫ --- */
-        #vn-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: var(--bg-color);
-            z-index: 99999;
-            display: none; 
-            flex-direction: column;
-            justify-content: center; align-items: center;
-            opacity: 0;
-            transition: opacity 1s ease;
-            overflow: hidden;
-        }
-
-        #ascii-intro-container {
-            white-space: pre;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: min(0.55vh, 0.55vw); 
-            line-height: 1.1;
-            letter-spacing: 0;
-            margin-bottom: 5vh;
-            text-align: center;
-            user-select: none;
-        }
-
-        #dialogue-box {
-            position: absolute; bottom: 0; width: 100%; height: 25vh;
-            background: var(--bg-color);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; box-sizing: border-box; z-index: 100000;
-        }
-
-        #typing-text-intro {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 18px; letter-spacing: 2px; font-weight: 100;
-            margin-bottom: 25px; text-align: center;
-        }
-
-        #vn-choices {
-            display: flex; gap: 30px; opacity: 0; transition: opacity 0.5s ease;
-        }
-
-        .vn-btn {
-            background: none; border: 1px solid var(--text-color); color: var(--text-color);
-            padding: 12px 40px; font-family: inherit; cursor: pointer; transition: all 0.3s; font-size: 12px;
-        }
-        .vn-btn:hover { background: var(--text-color); color: var(--bg-color); }
 
         /* ЛОГОТИП */
         #logo-container {
@@ -359,6 +316,8 @@
         /* ОБЛОЖКА И ИНФО */
         .album-cover { width: 400px; height: 400px; background-color: var(--line-color); flex-shrink: 0; z-index: 10; overflow: hidden; }
         .album-cover img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* ЗАГАДОЧНАЯ ОБЛОЖКА */
         .mystery-blur img { filter: blur(40px) grayscale(100%); transform: scale(1.1); }
 
         .album-info {
@@ -423,6 +382,7 @@
             #marquee-container { position: static; width: 100%; margin-top: 20px; }
             #typing-container { width: 100%; height: auto; margin-bottom: 20px; }
             
+            /* ИСПРАВЛЕННЫЙ ASCII ДЛЯ ТЕЛЕФОНОВ - БОЛЬШЕ НЕ НУЖНО ЗУМИТЬ */
             #ascii-wrapper {
                 width: 100%;
                 height: auto;
@@ -431,7 +391,7 @@
                 overflow-x: hidden;
             }
             #ascii-art { 
-                font-size: 1.2vw;
+                font-size: 1.2vw; /* Динамический размер шрифта под экран */
                 line-height: 1.2vw;
                 opacity: 1;
                 display: block;
@@ -448,7 +408,8 @@
             
             #logo-container, #theme-toggle {
                 position: fixed !important;
-                -webkit-transform: translateZ(0); transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
                 z-index: 999;
             }
             #logo-container { top: 20px !important; left: 20px !important; }
@@ -458,56 +419,50 @@
 </head>
 <body>
 
-    <!-- ПРЕЛОАДЕР -->
     <div id="preloader">
         <span class="preloader-text">www.cry4me.com</span>
     </div>
 
-    <!-- ЭКРАН НОВЕЛЛЫ -->
-    <div id="vn-overlay">
-        <div id="ascii-intro-container"></div>
-        <div id="dialogue-box">
-            <div id="typing-text-intro"></div>
-            <div id="vn-choices">
-                <button class="vn-btn" id="btn-music">MUSIC</button>
-                <button class="vn-btn" id="btn-me">ME</button>
-            </div>
-        </div>
+    <!-- ГЛАВНЫЙ ЛОГОТИП -->
+    <a href="#" id="logo-container">
+        <img src="logo.png" alt="logo" onerror="this.style.display='none'">
+    </a>
+
+    <button id="theme-toggle">LIGHT / DARK</button>
+
+    <div id="footer-info">
+        <p><a href="https://open.spotify.com/artist/3YSO9ev7YtOt3eiqHyNYwW" target="_blank" rel="noopener noreferrer">SPOTIFY</a></p>
+        <p><a href="https://soundcloud.com/cryforrme" target="_blank" rel="noopener noreferrer">SOUNDCLOUD</a></p>
+        <p><a href="https://t.me/mywristscryforme" target="_blank" rel="noopener noreferrer">TELEGRAM</a></p>
+        <p><a href="mailto:info@cry4me.com">INFO@CRY4ME.COM</a></p>
     </div>
 
-    <div id="main-site" style="display: none; opacity: 0;">
-        <a href="#" id="logo-container"><img src="logo.png" alt="logo" onerror="this.style.display='none'"></a>
-        <button id="theme-toggle">LIGHT / DARK</button>
+    <nav id="catalog-list">
+        <!-- ЗАГАДОЧНОЕ ПРЕВЬЮ -->
+        <div class="catalog-item" data-target="album-preview" style="letter-spacing: 4px; font-weight: bold;">[ 2026 ] <span class="eq"><span></span><span></span><span></span></span></div>
+        
+        <div class="catalog-item" data-target="album-1">cachalot remix <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-2">antistressworldwide <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-3">selfharmangel <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-4">fck everything <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-5">The Seven Works of Mercy <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-6">все будет хорошо <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-7">Seraphim (feat. AEИTENANT) <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-8">notyours <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-9">bloodyring (feat. suhnrize) <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-10">my wrists cry for me <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-11">sharpest pearl <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-12">forgive me <span class="eq"><span></span><span></span><span></span></span></div>
+        <div class="catalog-item" data-target="album-13">ピンクのブレスレット <span class="eq"><span></span><span></span><span></span></span></div>
+        
+        <div class="catalog-item special-link" id="btn-events">[ LIVE / DJ SETS ]</div>
+    </nav>
 
-        <div id="footer-info">
-            <p><a href="https://open.spotify.com/artist/3YSO9ev7YtOt3eiqHyNYwW" target="_blank">SPOTIFY</a></p>
-            <p><a href="https://soundcloud.com/cryforrme" target="_blank">SOUNDCLOUD</a></p>
-            <p><a href="https://t.me/mywristscryforme" target="_blank">TELEGRAM</a></p>
-            <p><a href="mailto:info@cry4me.com">INFO@CRY4ME.COM</a></p>
-        </div>
-
-        <nav id="catalog-list">
-            <div class="catalog-item" data-target="album-preview" style="letter-spacing: 4px; font-weight: bold;">[ 2026 ] <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-1">cachalot remix <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-2">antistressworldwide <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-3">selfharmangel <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-4">fck everything <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-5">The Seven Works of Mercy <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-6">все будет хорошо <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-7">Seraphim (feat. AEИTENANT) <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-8">notyours <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-9">bloodyring (feat. suhnrize) <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-10">my wrists cry for me <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-11">sharpest pearl <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-12">forgive me <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item" data-target="album-13">ピンクのブレスレット <span class="eq"><span></span><span></span><span></span></span></div>
-            <div class="catalog-item special-link" id="btn-events">[ LIVE / DJ SETS ]</div>
-        </nav>
-
-        <div id="default-view">
-            <div id="typing-container"></div>
-            <div id="ascii-wrapper"><div id="ascii-art">
-.                                                                                                                             :                                                                                                                             
+    <div id="default-view">
+        <div id="typing-container"></div>
+        <div id="ascii-wrapper">
+            <div id="ascii-art">.                                                                                                                             
+                                                                                                                             :                                                                                                                             
                                                                                                           .     :          .:.                                                                                                                             
                                                                                                         :         -::..   :  -                                                                                                                             
                                                                                                  .     =:          ..  -==: *                                                                                                                              
@@ -616,527 +571,505 @@
                                                                                            ::...                 :                                                                                                                                         
                                                                                                                    .                                                                                                                                       
                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                           </div></div>
-            <div id="marquee-container"><span class="marquee-text">NEW RELEASE OUT NOW /// LISTEN ON SPOTIFY & APPLE MUSIC /// WORLDWIDE /// TOUR DATES UPDATED ///</span></div>
+                                                                                                                                                                                                                                                           </div>
         </div>
 
-        <div id="display-area">
-            <!-- ПРЕВЬЮ -->
-            <div class="album-content" id="album-preview">
-                <div class="album-cover mystery-blur"><img src="preview_ambient.jpg" alt=""></div>
-                <div class="album-info">
-                    <div class="info-top">
-                        <div class="info-block">
-                            <p class="info-title" style="font-size: 20px;">[ 2026 ]</p>
-                            <p>TRANSMISSION_PENDING...</p>
-                            <p style="margin-top: 20px; opacity: 0.5;">A new chapter is approaching.</p>
-                        </div>
-                        <audio class="audio-player mystery-track" preload="none"><source src="preview_ambient.mp3" type="audio/mpeg"></audio>
+        <div id="marquee-container">
+            <span class="marquee-text">NEW RELEASE OUT NOW /// LISTEN ON SPOTIFY & APPLE MUSIC /// WORLDWIDE /// TOUR DATES UPDATED ///</span>
+        </div>
+    </div>
+
+    <!-- КОНТЕНТ АЛЬБОМОВ -->
+    <div id="display-area">
+        
+        <!-- ПРЕВЬЮ НОВОГО АЛЬБОМА -->
+        <div class="album-content" id="album-preview">
+            <div class="album-cover mystery-blur"><img src="preview_ambient.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block">
+                        <p class="info-title" style="font-size: 20px;">[ 2026 ]</p>
+                        <p>TRANSMISSION_PENDING...</p>
+                        <p style="margin-top: 20px; opacity: 0.5;">A new chapter is approaching.</p>
                     </div>
+                    <!-- Скрытый плеер для эмбиента -->
+                    <audio class="audio-player mystery-track" preload="none"><source src="preview_ambient.mp3" type="audio/mpeg"></audio>
                 </div>
-            </div>
-
-            <!-- АЛЬБОМ 1 -->
-            <div class="album-content" id="album-1">
-                <div class="album-cover"><img src="cover1.jpg"></div>
-                <div class="album-info">
-                    <div class="info-top">
-                        <div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div>
-                        <div class="links"><a href="https://mega.nz/file/7pxRhYqS#NIH3_xa3OIqlFNjyqovgnIChZc-QHb_lNar8urZWjSQ" target="_blank">Download</a></div>
-                        <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track1.mp3" type="audio/mpeg"></audio>
-                    </div>
-                    <div class="info-bottom">
-                        <a href="https://bnd.lc/c4mcr" target="_blank" class="platform-btn"><img src="bandlink.svg"></a>
-                        <a href="https://open.spotify.com/album/713S9z1u9kgfHcn136loHk" target="_blank" class="platform-btn"><img src="spotify.png"></a>
-                        <a href="https://music.apple.com/us/album/1873270027" target="_blank" class="platform-btn"><img src="apple.png"></a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- АЛЬБОМ 2 -->
-            <div class="album-content" id="album-2">
-                <div class="album-cover"><img src="cover2.jpg"></div>
-                <div class="album-info">
-                    <div class="info-top">
-                        <div class="info-block"><p class="info-title">ANTISTRESSWORLDWIDE</p><p>Written & Produced by cry 4 me</p></div>
-                        <div class="links"><a href="https://mega.nz/file/zlZwBbaK#cc3_6XCjiOPol6_LwuXWwAu4439Ip-jbDqH0ZJybl2M" target="_blank">Download</a></div>
-                        <audio controls class="audio-player" preload="none"><source src="track2.mp3" type="audio/mpeg"></audio>
-                    </div>
-                </div>
-            </div>
-
-            <!-- АЛЬБОМЫ 3-9 (ЗАГЛУШКИ ДЛЯ ЭКОНОМИИ МЕСТА, СТРУКТУРА ТА ЖЕ) -->
-            <div class="album-content" id="album-3"><div class="album-cover"><img src="cover3.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">SELFHARMANGEL</p><audio controls class="audio-player" preload="none"><source src="track3.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-4"><div class="album-cover"><img src="cover4.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">FCK EVERYTHING</p><audio controls class="audio-player" preload="none"><source src="track4.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-5"><div class="album-cover"><img src="cover5.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">The Seven Works of Mercy</p><audio controls class="audio-player" preload="none"><source src="track5.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-6"><div class="album-cover"><img src="cover6.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">все будет хорошо</p><audio controls class="audio-player" preload="none"><source src="track6.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-7"><div class="album-cover"><img src="cover7.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">Seraphim (feat. AEИTENANT)</p><audio controls class="audio-player" preload="none"><source src="track7.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-8"><div class="album-cover"><img src="cover8.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">notyours</p><audio controls class="audio-player" preload="none"><source src="track8.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-9"><div class="album-cover"><img src="cover9.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">bloodyring (feat. suhnrize)</p><audio controls class="audio-player" preload="none"><source src="track9.mp3"></audio></div></div></div></div>
-
-            <!-- АЛЬБОМ 10 С ПОЛНЫМ ТРЕКЛИСТОМ -->
-            <div class="album-content" id="album-10">
-                <div class="album-cover"><img src="cover10.jpg"></div>
-                <div class="album-info">
-                    <div class="info-top">
-                        <div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p></div>
-                        <div class="tracklist-container">
-                            <div class="track-item active" data-src="heartbreak.mp3">&lt;/3 <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="5_dney_nazad.mp3">5 дней назад <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="323.mp3">323 <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="antipsychiatry.mp3">antipsychiatry.org <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="beatitudo.mp3">beatitudo <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="hirocore.mp3">ＨＩＲＯＣＯＲＥ ４ ＭＥ <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="hogt.mp3">högt <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="julia.mp3">JULIΛ <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="zaklinanie.mp3">zaklinanie <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="scum_scum.mp3">スカムスカム <span class="eq"><span></span><span></span><span></span></span></div>
-                        </div>
-                        <audio controls class="audio-player" preload="none"><source src="heartbreak.mp3"></audio>
-                    </div>
-                </div>
-            </div>
-
-            <div class="album-content" id="album-11"><div class="album-cover"><img src="cover11.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">sharpest pearl</p><audio controls class="audio-player" preload="none"><source src="track11.mp3"></audio></div></div></div></div>
-            <div class="album-content" id="album-12"><div class="album-cover"><img src="cover12.jpg"></div><div class="album-info"><div class="info-top"><div class="info-block"><p class="info-title">forgive me</p><audio controls class="audio-player" preload="none"><source src="track12.mp3"></audio></div></div></div></div>
-
-            <!-- АЛЬБОМ 13 С ПОЛНЫМ ТРЕКЛИСТОМ -->
-            <div class="album-content" id="album-13">
-                <div class="album-cover"><img src="cover13.jpg"></div>
-                <div class="album-info">
-                    <div class="info-top">
-                        <div class="info-block"><p class="info-title">ピンクのブレスレット</p></div>
-                        <div class="tracklist-container">
-                            <div class="track-item active" data-src="we_can_be_lovers.mp3">(╯︵╰,) we can be lovers <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="i_wanna_die.mp3">I Wanna Die <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="changes.mp3">changes <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="drown_me.mp3">drown me <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="krasota.mp3">KRΛSOTΛ <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="dream.mp3">dream <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="puritygarden.mp3">puritygarden <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="sixteen.mp3">SIXTEEN <span class="eq"><span></span><span></span><span></span></span></div>
-                            <div class="track-item" data-src="urbat.mp3">Urbat' <span class="eq"><span></span><span></span><span></span></span></div>
-                        </div>
-                        <audio controls class="audio-player" preload="none"><source src="we_can_be_lovers.mp3"></audio>
-                    </div>
+                <div class="info-bottom" style="opacity: 0.2; pointer-events: none;">
+                    <a href="#" class="platform-btn"><img src="spotify.png" alt=""></a>
+                    <a href="#" class="platform-btn"><img src="apple.png" alt=""></a>
                 </div>
             </div>
         </div>
 
-        <div id="events-area"><h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2><div class="events-grid"></div></div>
+        <div class="album-content" id="album-1">
+            <div class="album-cover"><img src="cover1.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">CACHALOT REMIX</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/7pxRhYqS#NIH3_xa3OIqlFNjyqovgnIChZc-QHb_lNar8urZWjSQ" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track1.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://bnd.lc/c4mcr" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/713S9z1u9kgfHcn136loHk" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/1873270027?app=music&mt=1&at=1000lqjf&ct=bq&Is=1&ls=1" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-2">
+            <div class="album-cover"><img src="cover2.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">ANTISTRESSWORLDWIDE</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/zlZwBbaK#cc3_6XCjiOPol6_LwuXWwAu4439Ip-jbDqH0ZJybl2M" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track2.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/3YBpRN4y9Kz7Q8a6BWzSEB" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/antistressworldwide-single/1858269883" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-3">
+            <div class="album-cover"><img src="cover3.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">SELFHARMANGEL</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/nhBilBzC#pyI8oZ3_1TInR0A8vQjxgeBrDRwcTY5r0sTQx3HOTD8" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track3.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/1qHkmNulBnOvD36xY85dbU" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/selfharmangel-single/1851420817" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-4">
+            <div class="album-cover"><img src="cover4.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">FCK EVERYTHING</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/vgQ0yAjb#BevHkcIVV3XZ4Lw2FfnrVvtTAUAzCxYJ5Ab57qyjkiw" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track4.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/6wY96LslZvgow4WNm2b3X1" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/fck-everything-single/1851706247" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-5">
+            <div class="album-cover"><img src="cover5.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">THE SEVEN WORKS OF MERCY</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/G9hHlBgK#qe2GLYp4sNL3jJvGDY7y7d_Wqmv1kQG4RIucbzvjue8" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track5.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://bnd.lc/cfmswm" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/6Ikn6i72HUyYlwVj3HwYLR" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/ru/album/1844604562?app=music&mt=1&at=1000lqjf&ct=bq&Is=1&ls=1" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-6">
+            <div class="album-cover"><img src="cover6.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">ВСЕ БУДЕТ ХОРОШО</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/u5I2QCZJ#nj5eVTcelgndsivMl-Vs1h1bsXzgk0COcRbq6wUZveY" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track6.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://band.link/cfmewbf" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/6hJmACL54djSGDPfEgQVeR" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/1847833619?app=music&mt=1&at=1000lqjf&ct=bq&Is=1&ls=1" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-7">
+            <div class="album-cover"><img src="cover7.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">SERAPHIM (FEAT. AEИTENANT)</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/2h4EQL7b#9bBwff2-iipOetHxyQDAMtA1sNjoH4Aaaly8RAVsOB0" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track7.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://bnd.lc/cfmas" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/3VtE5nDrlFjCASkvxR5SMj" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/1843304936?app=music&mt=1&at=1000lqjf&ct=bq&Is=1&ls=1" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-8">
+            <div class="album-cover"><img src="cover8.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">NOTYOURS</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/noAVlY6S#XPe0n74uQ4aqk0HluEeUhWarw4suPQLCrxOU2ScBtVk" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track8.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/2dEccEtu1pyp2uSvMso7lR" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/notyours-single/1835788124" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-9">
+            <div class="album-cover"><img src="cover9.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">BLOODYRING (FEAT. SUHNRIZE)</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/X4A3RJ5L#J3dkRVT0lXf-FPjQMhDpvsufp_pBz1B344D0Wlz4bMo" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track9.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://bnd.lc/cfmbr" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/3fmOzC5Ezd1YN3829BurOb" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/1830135684?app=music&mt=1&at=1000lqjf&ct=bq&Is=1&ls=1" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-10">
+            <div class="album-cover"><img src="cover10.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">MY WRISTS CRY FOR ME</p><p>Written & Produced by cry 4 me</p></div>
+                    
+                    <div class="tracklist-container">
+                        <div class="track-item active" data-src="heartbreak.mp3">&lt;/3 <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="5_dney_nazad.mp3">5 дней назад <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="323.mp3">323 <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="antipsychiatry.mp3">antipsychiatry.org <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="beatitudo.mp3">beatitudo in mundo vivimus <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="hirocore.mp3">ＨＩＲＯＣＯＲＥ ４ ＭＥ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="hogt.mp3">högt <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="julia.mp3">JULIΛ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="kto_ona.mp3">КТØ ØНΔ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="mertsaniye.mp3">MERTSANIYE <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="paper_planez.mp3">PΔPΞR PLΔNΞZ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="seems_quiet.mp3">seems a little quiet over here <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sehnsucht.mp3">Sehnsucht <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="umirat.mp3">УМИРΔ†Ь (feat. СКОРБЬ) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="zaklinanie.mp3">zaklinanie <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="nikto_ne_vernetsya.mp3">НИК†Ø НΞ ВΞРНΞ†СЯ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="julia_jp.mp3">ジュリア <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="scum_scum.mp3">スカムスカム <span class="eq"><span></span><span></span><span></span></span></div>
+                    </div>
+                    
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="heartbreak.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://band.link/cfmw" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/5ws6PUUoe2DPQaqAUi8i6Y?si=NDT51KegSaqJV-5Q1XqPzA&nd=1&dlsi=af07d9c48b814958" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/my-wrists-cry-for-me/1798273406" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-11">
+            <div class="album-cover"><img src="cover11.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">SHARPEST PEARL</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/XoZBHQKB#nF8CnfAhTVAP6X0Uk8PaZEXbxgn5CR6xl4sDJ7aWFM4" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track11.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/1xiCfL0NQMThvb87DN9XRe" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/sharpest-pearl-single/1791541196" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-12">
+            <div class="album-cover"><img src="cover12.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">FORGIVE ME</p><p>Written & Produced by cry 4 me</p></div>
+                    <div class="links"><a href="https://mega.nz/file/HxJzRK5A#ClRKbIeTeE5jiKJJ00wRzfh0Ox4PkY5rl7lh3FSrVWU" target="_blank" rel="noopener noreferrer">Download</a></div>
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="track12.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/380mgLficwhgE0GSkpB1E7" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/forgive-me-single/1791541093" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="album-content" id="album-13">
+            <div class="album-cover"><img src="cover13.jpg" alt=""></div>
+            <div class="album-info">
+                <div class="info-top">
+                    <div class="info-block"><p class="info-title">ピンクのブレスレット</p><p>Written & Produced by cry 4 me</p></div>
+
+                    <div class="tracklist-container">
+                        <div class="track-item active" data-src="we_can_be_lovers.mp3">(╯︵╰,) we can be lovers <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="i_wanna_die.mp3">I Wanna Die <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sleepless_night.mp3">٠ 眠れぬ夜の謎 ٠ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="a_dead_moth.mp3">a dead moth <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="changes.mp3">changes <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="cilia.mp3">CILIA <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="drown_me.mp3">drown me in kerosene <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="find_me.mp3">find me in the sea <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="glassy_child.mp3">Glassy Child <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="her_uncertainty.mp3">her uncertainty feeds my torment <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="hydrangea.mp3">HYDRΔNGΞΔ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="i_luv333u.mp3">I luv333u <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="krasota.mp3">KRΛSOTΛ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="cuneiform.mp3">kyo͞oˈnēəˌfôrm,ˈkyo͞on(ē)ə-12310. (feat. deadrazy) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="l_sss.mp3">L・SSS <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="lonely_cloud.mp3">lonely cloud <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="mechta.mp3">мечта <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="dream.mp3">dream <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="purify_me.mp3">purify me <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="puritygarden.mp3">puritygarden <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="romanova.mp3">Romanova <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="spooky.mp3">spooky <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sixteen.mp3">SIXTEEN <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="sunflower.mp3">sunflower <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="ts_geisha.mp3">Trans-Sexual Geisha <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="trying_to_be_innocent.mp3">Trying to Be Innocent (feat. deadrazy & Shirenvasea) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="uhri.mp3">Uhri <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="urbat.mp3">Urbat' <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vanity.mp3">VΛNITY <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vi_alalm.mp3">Vi Alalm Ohsen <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vv.mp3">VV <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="vvalensiia.mp3">VValensiiA <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="we_belong.mp3">We Belong Together <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="wept.mp3">Wept <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="xvi_xvii.mp3">XVI XVII <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="zerkalo.mp3">гниющее отвратительное смотровое зеркало (feat. deadrazy) <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="spectral.mp3">ѕρɘcτral <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="klub.mp3">клуб разбитых надежд <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="die_young.mp3">ダイ・ヤング <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="down_in_falling.mp3">ダウン In falling <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="dont_forget.mp3">忘れないде <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="think_deeply.mp3">深く考えてくれ <span class="eq"><span></span><span></span><span></span></span></div>
+                        <div class="track-item" data-src="suidgrens.mp3">粘膜・suidgrens 03 <span class="eq"><span></span><span></span><span></span></span></div>
+                    </div>
+
+                    <audio controls controlsList="nodownload noplaybackrate" class="audio-player" preload="none"><source src="we_can_be_lovers.mp3" type="audio/mpeg"></audio>
+                </div>
+                <div class="info-bottom">
+                    <a href="https://band.link/cfmb" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="bandlink.svg" alt="BandLink"></a>
+                    <a href="https://open.spotify.com/album/0aLeiEi3bDtDwSfB4v0zrS?si=5E9ijrLMR8KYQCVoziMFXg&nd=1&dlsi=a36524009eda4074" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="spotify.png" alt="Spotify"></a>
+                    <a href="https://music.apple.com/us/album/%E3%83%94%E3%83%B3%E3%82%AF%E3%81%AE%E3%83%96%E3%83%AC%E3%82%B9%E3%83%AC%E3%83%83%E3%83%88/1787191956" target="_blank" rel="noopener noreferrer" class="platform-btn"><img src="apple.png" alt="Apple Music"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- АФИШИ -->
+    <div id="events-area">
+        <h2 style="font-weight: 100; letter-spacing: 2px; margin-bottom: 30px;">LIVE / DJ SETS</h2>
+        <div class="events-grid">
+            <!-- Блок пуст, готов для новых афиш -->
+        </div>
     </div>
 
     <script>
-        const intro1 = `
-                                                                   ++-...-                                                                         
-                                                                +=-======--= ==--=+=+========                                                      
-                                                        *****+++-=-.....=*+*=.-++=+*+--====+=---                                                   
-                                                   ++++#+--=+=....  ..:-=-:.:-:.::.........:-+*=-*                                                 
-                                                ++++*=:=+-:... ......... .:-:..::..::..         ..=-                                               
-                                              ==+++=-:.  .....    ...  .:...............:::.   .-=-:.-+                                            
-                                            ++*++=-:  ....      .    ..         ..         ..:..   .:==.:-                                         
-                                           ==+=+::. .:.      ..    .              ..           ....   .==.:-                                       
-                                         =+=+=... ...       .     .                 ..           ..... .:=+::                                      
-                                        ====..:. :.       .                          ..             ...  .:+:-+                                    
-                                       ==+: .....        .                            ..            ....  ..==-+                                   
-                                      +++.  ....        .                              .       .      .... ..--=                                   
-                                      +-.  ...         .                                .       .       ......-:-                                  
-                                     =:.  ...         .                                  .       ..      ......=:+                                 
-                                    +.....:.                                                      .     .......::-+                                
-                                   +.....:.  .       .       .                                     .    ...........:                               
-                                  =.....:.. .               ..                            .        ..  .....:....:..-                              
-                                 =:....:-....               ..      .                     ..       .:.......:.......-=                             
-                                =-....::.............       :.      .                     .. .    ...:.......:....:..:=                            
-                               *=....:.-..:..........     ..:.     ..               .    ..:... .....:.......::.......=                            
-                               +....:.::..........  ............  ...               .    ..:.........::......::....:...-                           
-                              +:....:.-::.  .................... ....               .. ..............::....::::.  ......:                          
-                              +....:::-:::..:.....:........:............          .... ....::.........:...:::.::...::....                          
-                             =:.. ..::=:::.................:................................:..:......:....:..:-:::......:                         
-                             =....:.::=:::.................-:..............................::..:......:.......:-::........:                        
-                            +-...::::.=::::::....:....:....::..............................:::.::.....:........=::.........:                       
-                            =....:.::.-:::.:.....-....:....:+..:....:......................-:-.:-.  ..-........=:..........:                       
-                           +=....:.-..-::..:.....=:...--...-#..-....:......................=:-.::.....:........-:.....::.:..                       
-                           +:...:..-..:::..:.....=....==...:%-.::...:.....................:=:*.=::....:........--.....:-..-:-                      
-                          +=.:..:..-...:::.::....=:...+=.-.:#+..-...::....................=--#.+-:....:........=-.....:-::==-                      
-                          +-:...:..-...-::.:-....=-...+-.=.:+=-:-...::..:................:=-=*.=+:....::.:.....==...:..--:-*+*                     
-                          *-+..::..:...:::.:=....=-...-:.+:=*+##%#++--:.:.........:.::-=*##***=-*:...:-.::.:...==:..:..-=:-*:***                   
-                          *+=..::..:....-:.:+....==..=**++:--.:=+=::::-.:........:..-:..-+--:-:-=**=:.-:::::...+=:.:-.:==::+*-+**++                
-                          =#-..::..-....:::.+-...=#+--::.=.-:..-++-:-:--:::.....:...-:.-*=--.::::-:.=**--:::..:+=:.:: .==-:=#=+                    
-                          =*::.-...-.....::.=+.:+-#::-:.-:.:....+*=:--::-:::...:.:.:=::*+--..:-.:==.:=::*+:...-+=:.:-.:++-:=*=+                    
-                         ==+::.-...=......::-#=..-#=-::-.:.-....+-=-:=::--::..::::.-+:=*++:..+:.:=-::*:-::--.:=+-:.--.:=+-:=++=+                   
-                         +=+-..-:..=-......:-#+..:+==.--.::..   :..=.=:::=-:::.::::=--+--:..:...----+*:-:-:..==+-:.-:.:=+-:=++==                   
-                          ===..::..-=...::.:-*+:.:+--.-..:=:::. : .=-=-:-=--:..::::+:-=-..+@@@@@@*:+-=-:--..-=-=:::-:.=-+-.=++==                   
-                          ++=:.::...: ..:::.:*++..*.:+=@@@@@@@@@* ..+-*.:*=-..::::===-+.:@%@@@@@@@@@---:--:--=--::::..=:+:.=++==                   
-                          *+=:..-...+:...:::.=+*=.=-#%@@%%%%##@#.-. -=*-:#--:::::-+==+..:-@%%%%%%%@@@#=:=:-:---:.-=..-=:+:.=++==                   
-                          **=-..-...=*...::::-+=*=:%#-@@@%%%#%%@: . .-==:#=-.::::==*.:   #%%%#%%%%%@+#%==+-:=:-..=:..=-:+..=++-=                   
-                          **+-..-...:*=..:-:::=++:#%.%@@%%%%%%%@*   .--::++-::-::*=:..   @@%######%@# %+-+::=-:.-=..-+:-+..=++-=                   
-                           **=:.::...++:..--::=++.#= %@%######%%#    .-.-=+-::-:*+:.     @%%#**###%%% +%=-.-=:.:+-..+-.++.:+=*-=                   
-                            *=:.:-...:++..:==--+*.#. %%%#*****%%*    : .--=--:==--..     #*%#****##*# -+==:=-:.++..--::#=.:+=+==                   
-                           *+=-.:-....=+#:.:==-=*.#- -##%****##*+    . .=.-=:-*..=       :=-#****#-=: #:-:-=:.===..=-:=%-.-+===                    
-                          ##-+=::::...:+=*:.:+=-+:.:- +--#%%%*-#    .  .-.=:-:.  : .      +=--**--+=-=.:--::.+-=:.=-::+%:.-++=+                    
-                         ##++*+:-:=....==-+-.-++=+.....:#+---*%.       :.+=.     .        .-=-:-==.....=*-..+-.*:--:.:*#:.=++++                    
-                        *#*+=++--.=-...:+--*-.-+#+= ....              ...                    ........===-.:#=.:#.-::.-#*.:++-+++                   
-                     ***# +=+++--.=%....-=.:+*::**++......                                   .. ......:::#@*:.-#-::..+#+.:*=+=++                   
-                 ++**     *=+**==.-%:....=:.-*%#--=.:-....                                     ......::###%-::===-:.:**-.-*==+++                   
-                          *+***=+.:%=....:=.:##*+*%*+-                                           .---:***#+:.-+.+-:.-#*-.=+-=+++                   
-                          +*+*#=+::#+.....=-.-#*++*+  ..                    .                     .. -#**#-.:+::--:.+#*:.+-=+***                   
-                          *++*#=*:.+*-.:...=:.+#+++**                                               -%+**+..:::-.--.#*+.:+:*+*+                    
-                           +++*=*-.**+..+...-.:**++**%.                                            =#+**#=..::::..--#++.:==*#**                    
-                            +++++-.***:.-+...:.-#*+++##=                                         .##++**%:.::.-..:::#**.:--+=**                    
-                            **+#+=.+*+-..*=.....+*++++*+*=                   .                 :##*#+**%*..:.::..=-:**+.::.--+                     
-                             *-=+=.+*++...#- ....++++++#++#*.             ..  ..            .+#**+#++**%+.:..-:..++.+*+.-:-+=-=                    
-                            +=#===.+*++...=#: ...:+=+==++*+++**.                          =#+++****++**#-....=...*+.+**:-:=++--                    
-                            =-+*=+.+*+=....+*: ...:+=+===+*+++++%#-.                  .==%#*+++***++*+#*:....=..:#+.=**:--+*++:-                   
-                           +-= *=+.+++=:  ..+#- ..:=+======+++***=::-+-            -+::::#**+++*++==+#**....:-..-*+-.*+---=* +-=+                  
-                          =--  *#=.*++-: .  =+*: ..-++======++***+::::::-+=:..:++=:::::::**++++**+==*#++ . .::..:++=.=+=:--*  =-=                  
-                          -:-  +*+.#++-: .  .=**: ..=++-===-==++*=.:::::::::::::::::::::.+*+=+=**===***= ...::..:*++.-++:-=*  +--                  
-                          =+   +*=.=++:: ..  =++*- .-*++-======+*+..::....:::::::::.:.:..=*+===#*=-=***- . .-:..:+*+::=+:-=+   =:                  
-                         *==   ++=.-=+::. .  .=*++. .++++=----=+*=.........::::.......:..:*=+=+#=--++**. . .:. ..+*==.=+=-=+   =-                  
-                         +==   +*=:--+... ..  :++++..=++++----==*=..........::..:....... .++-++*---*+**. .  :. ..+*==.===-*++  -:                  
-                          =+   ++=-.:+... ..  .=*++- -++++-:-:--#:...............:.....:===+=.:+-:-*+#*. . .:.  .+++-.===-++**+--                  
-                          =+  *+-==.-=..:..:. .-*++=..+: .=.-:-:-..........................:-*==:-=*=#*... .-.   =+*-:===+=*===--                  
-                          +=+**=-=+.+=..:.... .-*+=-. :---=:::-::.......................... ...---=.:%#:.. .-.   =++-:-+==*+=+==++                 
-                           ++#=++==-.=:.:....  -=.--: =--++-:.--::........................... :---%*..== .  -.   -**::-=+-=++*++   *    ++         
-                   ++      +**#+==-+:-:..:.... :+-:--.=*:..::.:+.-...........................:-:-:.=..:=..  -..  :+*.:=-+*-=******      ++         
-                   **     ++#++++==++:=..:...: :*#=.:.... .::..*:.::.......................==..=...=..:=. . -..  .+=++:==+***   %%%%#  **          
-                   ##  +==*** ++=++++::: .. .. ::...:.:. .:-..:..:.....:-.............::::....::.:.-...+.   ::.   =-===-++**==+    %#****          
-                +*###*=+*#    *++#@@:..:... .. ::...:.-..:--..:................   .....  ......:..-= ..=.   .=.  . *@@*=+**++##**+++===  ***       
-                   %%*+*+==+*###:%%@= ... .  ...:. ...: :::....           ........            .:. +: ..::.  .+.. . +@@+=+=======+***+ ##***        
-                       +*+*%@@%#.%%%#  ..    .:.:. .:.-......                                  .-...  .::.   +.  .  @@*:*++=+++++======+           
-                        #+ .@%%@.+%%%- ... . ...:--:.:=-....                                    .-..   .:.   =. ..= .@*..  .+*=-=+**+              
-                         +  *%%@+.#%%#.: .    -:.:...:....                                     .=..... ...  .=:  .:= =#.      :+                   
-                        %+. .%%%%.-%%%+..:  . .:- .-.-.     . .                                =. .....:..  .=: ..-@% +.        .                  
-                       -  :  #%%%+ %#%%-=-    .+::...-....:..         ...............         +.      .-=-..=*-   =@@%.:          -                
-                      #   .  -@%%#.=%##:*:   . ++..:.=..         ...                        .@:         :.  -=:   +@@@+..         .-               
-                     @:   ..  @@%%= *%=*#:   . .:=.:::    ...::..  .                        *.          -. --+.  .%@@@...          .-              
-                   *++     .  -@%%% .=*#%-   -....+==::-:..          .-+++****########%%#*+*.           -.:-==.  :@@@%..:           :              
-                  =:--     :   #%#%%:*##%-   =: .. -%......     .+%@@@*==++****########%%@%.           :.:=-=-. .#@@@+.:..          .:             
-                  +::=.    .:  :@%%%=.%##-   :-. .. .%. ..:=*@@@@@@@@@%++++****####%%%%@@%.           ...--:-.  -@@@@..-..          .==            
-                  =:::::    :   #%%%# =##-   ..:...   %@@@@@@@@@@@@@@@@-.               .            .. .-:-=. .*@@@@ ...           .-:-           
-                  :::...-:. ..  :%%%%- *%.   .. . ..   *@@@@@@@@%*-..    .:=+++****#%#%%.          ..   .::==. -%@@@+ .             :=::-          
-                  -:....:.:=.-   #%%#%..=   . .  .  .   .@@@*.    .-#@@@%+++***#*##%%@%.                .::++..+@@@@  :.    .      -::.::          
-                  ::...::...:-:  .%%%@%. - .#-       .    :--+%@@@@@@@@@@*++*****#%%%@+===+**=-.        :#:##..*@@@* ..     .    :+:.:.::          
-                 -::...:......+.  *@@%#....%#%:      ...    .#@@@@@@@@@%*.          *++*+++++*+***#*: .=##:##-.+@@@: =      .  .:..::...:          
-                 -::...:.....:::  .@%#*%-.+%##*         .+##***%@@#=.    .        ..        .-=*##***##*###-.+.+@@* -.       .:.....:...:          
-                 =::...:.....-...  =@@%%+. #%###.     .**+++**++=+.      .       .***+++**+-.      :*###*##=-@-.@@ ...     .=:......::..:          
-                -.==...:....::..:.  :%%%%#..#####.  .#*****:  :-===*+.   ..     :+=++++++*****#*+:     .-. +%#@=*. . .   --...:......:...-         
-                :..=:..:....::.....  +@@%%*  ##*##*#*****. -**++++==-+:  ..    .+-:...-+************+:    .%@#%@*.: ...-:.....:......:...-         
-                :...::.:....:......   %%#%%*  ###****##. =#*****=......+....  .*          .=##*********###@#%@%* .:..--........:.....::...:        
-                :...::.::...:....... ..#####+ .#*###*. =**++**-   -+==+--... .=. .-+=++:      .-+********#%##%*  . :=-:........:......:.::-        
-                .....:...:..:.........  %%###*  ###. =#******   .@@:.:--=--  -..+=-:#@@@@+=-.     .#*******###  .-+....:..............:=:.:        
-                ......:.....-......::.  .#####+    -#******:   +@@@@*:.:---=---+=:+@@@@@:..:.:-.     :+****#*  .+:.....:........:.....-...         
-               ........:.....::....:.:   .###*##:+#******+   .:.+@@@@@*:..=---=:-%@@@@:  ......:=.      .+*-  .-:.......:........:..::...=         
-               :................:::....   .##**********+   :=.... .=@@%@%----=+%*@@%: ...     ....:.          :..........:.......-::...::=         
-               ....................::...   .**********    -:..     :*==+*====--*--+...            ...:       -:.................:::....:::         
-               ....      ............::..    #******    .:..    . ======+=====-#=--*:.                :-.   -..................:......::.::        
-               ..             ..........::    **#*.   ...:.     .======+#=====-#+-==+-               :.......   ...........:.:.............        
-                .                   .....:.    .     :.......  :+=====#%%+===-+#%+====-           ... ...       ...........:...............        
-                .                     ......       :........  :=-====#*+*%+==*%+*#+===-:        ....   ...        ...........    ...... ....       
-                ..                 .     ....    ...     ..   :-----*++==#.   *=++++-=-=.     ...        .         .......     .....     ..        
-                ......... .                  ......  .  .    :------+==-+#.   +==+=++----. ...  ..       ...       ...       ....        ..        
-                                                 ...   ..   .-:::::----:=+.   ==-====-:---...    ..        .      ..       ..:.          ..`;
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
 
-        const intro2 = `
-                                                                                                 ....  ...:                                        
-                                                                                                 .  .  ....   ..:                                  
-                                                                                                 . ..    ..   ..:                                  
-                                                                                                   ..   ..   ....                                  
-                                                                                                   ..   ..  . ..                                   
-                                                                                                   .. . ..    ..   ..                              
-                                                                                            ::.:-::::-:..:   ..  ....                              
-                                                                                      :::.::....:....::...:::.. .....                              
-                                                                                    ::::...::...::....:...:::.:::...                               
-                                                                                    ............::....:....:...::::                                
-                                                                                    :..::.............:....:....:::                                
-                                                                                     :..:.............:....:......:                                
-                                                                                      :::::................:......:                                
-                                                                                       :::::...:::::...:...:...::::                                
-                                                                                        .:::::........:::::::..::::                                
-                                                                                         ::...................::::                                 
-                                                                                         ......................:::                                 
-                                                                                         :....................:::                                  
-                                                                                          :...................:::                                  
-                                                                                           ....................::                                  
-                                                                                             :.................::                                  
-                                                                                             :::............:::::                                  
-                                                                                            ...::...........::::                                   
-                                                                                            .....::........:::::                                   
-                                                                                            :.....:::.......:::                                    
-                                                                                            ................:::                                    
-                                                                                            ................:::                                    
-                                                                                            ::................:                                    
-                                                                                            ::................:                                    
-                                                                                           .::.................                                    
-                                                                                           .::.................:                                   
-                                                                                           .:::................:                                   
-                                                                                           ...:................::                                  
-                                                                                           ....:...............::                                  
-                                                                                           ....:...............::                                  
-                                                                                          ......:..............::                                  
-                                                                                          ::....:...............:                                  
-                                                                                          ::....................:                                  
-                                                         -----:- ====-:----=              ::....................:                                  
-                                                     ==--==::--=---====---=====-         ::::...................:                                  
-                                                ++++=-:......:::::.:......  ...:-==      ::::....................                                  
-                                              +=-:............::-:...............:::-    :::.....................                                  
-                                            ==-.....    .  ..       .       .......--.:  ::.....................:                                  
-                                           --:....                             ......----:::....................                                   
-                                          -:....                       ..        ......-:-.....................:                                   
-                                        -:.....                         ..        ......:::.....................                                   
-                                       -.....                                  .    .....::.....................                                   
-                                      :.....                                    .   .....::....................:                                   
-                                     ::....                                      .  .....::.....................                                   
-                                    ::..:. .          .                    .     .........:.....................                                   
-                                   ::..::...          .                    ...   .......:...:...................                                   
-                                   :..::.........    ...               .  ..............::::....................                                   
-                                  ::..:::................  ..          .. ...............::.....................                                   
-                                  :..::::......................     ...............::....::.....................                                   
-                                 -:...:-::............:.......................::....::....::....................                                   
-                                 ::::::--:::..........=:....................::.:....::....::....................                                   
-                                ::...:::::::...:...:..=-....................::.-....::....::....................                                   
-                                :::..:::::.:...:...:..=+....:..............:--:=:...:::...-::...................                                   
-                                ::::::..::.:...-:..-..-*---::..........::-++***+=:..:::...:::...................                                   
-                               -::::.:..:::::..--.:++++*=--.:-:........:..:+==----===-::..:::..................:                                   
-                               -:-::....:-::-..=*=:-.-:=:=+-:::::......::.-+-:-::-:---=-..:::..................:                                   
-                               --=::.....=::-.-==::-::::.-+=-::-:...::.:-:+-:.-.:=::--:::::::..................:                                   
-                               ===::..-..:::==.:+-:::::..:-:--::-::::::---==:::.-=-=-=-:.-:::..................:                                   
-                               -=-::..-..:::-+..-=::.::...:.:--.---::::=--:.-##*#+--=--.:-::-..................:                                   
-                               ==-::..:..::::+=.:--:=%@@@#: .-=:--::::-=-:.=#%%%@@@#=:-:=:.:-...................                                   
-                                ==:::.:-..-::=+-.:%@@%%%%#:..:=---:::-==:. :@%%%%@@-#:==-:..=..................:                                   
-                                ==:.:..=:.:-:-=+=#:#@%%%%@*  .---=::--=:.. -@@%%%%@=.*::=:.::..................:                                   
-                                 ==::..-=..---====.@%%###%#   ..-=-:-==..  .%%##*#%*.+::-:::...................:                                   
-                                 +=:::..==.:=--==-.%%#***%*   . :--:-::     =+***+=.--:--:::...................:                                   
-                                +=--:-..:+=.:+==-+.-=+***=:    ..--:. .     .+=--+:..:--:::...................::                                   
-                                +==--:-..-==::++-...:=-::.     .:.              .....:.=--:...................::                                   
-                               ===+=-:-..:=-=-:=+-....                          .....:=+=:....................::                                   
-                             == ====-:--..:-:+*=--....                        .....:+==*:.....................::                                   
-                                ++-==-:=...:::***+-=-:.                          ..---=+:.....................::                                   
-                                ++==+=:+-...:.=***+..                             .:-:-=...........:.........:::                                   
-                                 +==+=:=+....:.=****:                            .:-:.-:......................::                                   
-                                  ==+=:=*:.:..::+*++*+.           .+=:         .*=::..:::....................:::                                   
-                                  ++==:=+=..:...:++++++*=.        .::.      .-+++::...-::....................:::                                   
-                                  =+++==++..:- ..:++++++++*+-.           ..:-++++::...:.::..........:........::-                                   
-                                 ==-=+=-+=: .=+...=+++=++++*-:::-:.   .-::::=+**=:....:...:..................:-+                                   
-                                 =-=+*=-+=:...++...++===++**-.::::::::::::::+**+=:....:....:..................-*                                   
-                                -:- ++=-+=-.. -+=..:+=---=++=:....:::::..::-..-==:............................=++                                  
-                                -:- =+=:==:.. .=+=..=+----=+=........::::.....--==...:...............:........:==                                  
-                                ::: ++=-==:... :++-.-++----=:.................:---:..-...............:.......:: -=                                 
-                                ----=++-==.... .-=+:-+==::-:....................::-:.=-...............:......-+   ::                               
-                                 -======--:.....:==-:---::::...................:::#=.=*......................=+                                    
-                             -    ==++==--:...:..---:==:::.:....  .............:..#%.-%=  ............::....:*+                                    
-                             =   =++=+===--......---....:.....:...................+%..%+. ............::....:*++                                   
-                          -  ========++-=:...........:....................   .. ..=@+.++:.  ..........::....=*+=+=---                              
-                           ==+++===++==+#:.... .............          ..     .    .+#.-+.:. ...........:....===-=--=-::                            
-                               ===++===%@- ...  ....::.....                  .    :---.+.::. ..........::...=---  ==                               
-                                  -*%@==%%: ..  ..:-:-..         ...              :%::.-.:::. .........::...--..                                   
-                                  ..#%#-*%#.:.  .:.....  ...             :+%+     :#%..+-::............:...::::..                                  
-                                 :: -%%*=%%*-: ..-::...... ...    .:=+**##%@.     .#%+.-+.:.............::.:-:::.:                                 
-                                .. . +%%++##-:  ..::.......   .:=++*#**%#+=-      .*#=.-+ .:..:.........::.:: --:::                                
-                                .  .  %%%-+**-  .....--..  .+@@@*+++=-..  .       :**=.-= ....:.........::::- --  :::                              
-                               :.   . :%%#=*##.  ... .:..-%@@@@@%: .-+*###%+=++++++**-.-+ .:............::::- --     ::::                          
-                              :::   .  +%%#-**.  ....  -%@@@@%=..+++*####**==+****###-.**....:..........::::::::                                   
-                              ::::.  .  *%%+-*..    ..   +@#..+@@@@+:.   :......... ..=##. .::..........::::                                       
-                              ::...:..: .%%%=..:..   ..    -@@@@@#.     .=+++++******=**#: -:...........::::                                       
-                              ::........ :%%#-:.+#:     .:+++*%%: ...  .-==---====+*=+*+-..::............:::                                       
-                              ::........ :%@%+:*##-    -*++-..:::.... ..         ..    .. .:............:::                                       
-                              -:.......... -%%#+.+##+ .***=.+**+++++-..::==::*@@=::::::....::............:::                                       
-                              :::.......... -%%%+ +#####*:-***+. :===-:----:=@@%:.....:::::::............:::                                       
-                              ..:::......... =%%%+ =###+-*#**- .%%=::--==:--#@@+......::...::.............::                                       
-                              ...:::......... .%%%#..-.=###*. .#@@@@#=-===#@@%-:..::..::...::..............:                                       
-                              :.......::...... .#%%#+=####+  ... .=%##++=+#++:::......::...::...............                                       
-                              .................  *%%%%%%*.  :... :++*#**++#*++=:......::....::.............:                                       
-                              ..............:...  =%%%%+   ::.  =***#@@***@@***:.::...::....::.............:                                       
-                              ................:::  .%%:  .:::--**###%@@@%@@%#*#*:....:::.....:..............                                       
-                              ...................:.    .::..::*#####@%@+ -#@###%=:...::......:..............                                       
-                               .....................  .:...::+####%%@%@+.+#@@#%%%-...::.......:.............                                       
-                                :.....................::::::=%%%%%%@%%@*-*%@@%%%%#:.::......................                                       
-                               :::::......................:+%%%%%%@@%%@-:*%@@%%%@%:..:......................                                       
-                              .............................%%%%%%%@@%%@-:+%@@@%%@@#.:.......................                                       
-                              ..............::--::::::::::%@@@@@@@@@@@@::*%@@@%@@@@=:.......................                                       
-                              ...........::::::::::......*@@@@@@@@@@@@@::##%%@@@@@@%........................                                       
-                              :...............::::......=@@@@@@@@@@@@@@-=%%%@@@@@@@@=.......................                                       
-                               :...::.........::::......:%@@@@@@@@@@@@@--%@@@@@@@@@#........................                                       
-                               :::............:::.........-%@@@@@@@@@@@-=%@@@@@@@%..........................                                       
-                               ::..............:...........#@@@@@@@@@@@:=@@@@@@@@=..........................                                       
-                              :................:..........:@@@@@@@@@@@%..#@@@@@@@-........................::                                       
-                              :...............::..........*@@@@@@@@@@@#..%@@@@@@@-.......................:::                                       
-                              :...............:::........:%@@@@@@@@@@@+.:%@@@@@@@:.......................:::                                       
-                              :...............:-:..........:*%@@@@@@@@+::@@@@@@@@:........................::                                       
-                              :...............:-:::.............=++=--:..%@%%@@@@:........................:::                                      
-                              :..............::-.........................  ................................::                                      
-                              ::............::-:.......    ...................::..........................:.:                                      
-                              ::............:::........    .............:.......::........................::.                                      
-                             ................:::.......................... .....:.........................:..                                      
-                            .................:::...........................................................:.                                      
-                            .................:..................................:..........................:.                                      
-                            ................::.......................   ...    .::::.........................:                                     
-                            ...............:::..................................::...........................:                                     
-                           ...............:::::....... ........................::............................:                                     
-                           ................:::............................    .:...............................                                    
-                          .................::............................  .. ......    ......................:                                    
-                          .................:.......     ..             ..:===-......   .............    .......                                    
-                          ................::......                  .....=***+....     ...........       .......                                   
-                          ................:.......                     ...-*+:....     ..........         ......                                   
-                           .. ...........:......                        ..........                         ......                                  
-                          . .............:......                        ..    ...                   ..............                                 
-                            ........................                    .      ..                 ..         .....                                 
-                             ..............                             ..    ..                  ..          .....                                
-                              .............                                    .                   .          .....                                
-                               ..........        . .                           .                   ..         .....                                
-                                   ....                                                                                                            
-                                     ..`;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+        });
 
-        const overlay = document.getElementById('vn-overlay');
-        const asciiIntro = document.getElementById('ascii-intro-container');
-        const typingBoxIntro = document.getElementById('typing-text-intro');
-        const choicesIntro = document.getElementById('vn-choices');
-        const mainSite = document.getElementById('main-site');
         const preloader = document.getElementById('preloader');
-
-        function typeIntro(target, str, cb) {
-            target.textContent = "";
-            let i = 0;
-            const timer = setInterval(() => {
-                target.textContent += str[i];
-                i++;
-                if(i >= str.length) { clearInterval(timer); if(cb) cb(); }
-            }, 15);
-        }
-
-        window.onload = () => {
-            if (sessionStorage.getItem('visited')) {
-                preloader.style.display = 'none';
-                overlay.style.display = 'none';
-                startMainSite();
-                return;
-            }
-
-            setTimeout(() => {
-                preloader.style.opacity = "0";
-                setTimeout(() => {
-                    preloader.style.display = "none";
-                    overlay.style.display = "flex";
-                    setTimeout(() => {
-                        overlay.style.opacity = "1";
-                        asciiIntro.textContent = intro1;
-                        showFirstQuestion();
-                    }, 100);
-                }, 800);
-            }, 1200); 
-        };
-
-        function showFirstQuestion() {
-            choicesIntro.style.opacity = "0";
-            document.getElementById('btn-music').style.display = "inline-block";
-            document.getElementById('btn-me').textContent = "ME";
-            document.getElementById('btn-music').onclick = goMusic;
-            document.getElementById('btn-me').onclick = goMe;
-            typeIntro(typingBoxIntro, "ARE YOU HERE FOR THE MUSIC, OR ARE YOU HERE FOR ME?", () => { choicesIntro.style.opacity = "1"; });
-        }
-
-        function goMe() {
-            choicesIntro.style.opacity = "0";
-            typeIntro(typingBoxIntro, "ARE YOU SURE?", () => {
-                const btnMe = document.getElementById('btn-me');
-                btnMe.textContent = "NO";
-                document.getElementById('btn-music').style.display = "none";
-                choicesIntro.style.opacity = "1";
-                btnMe.onclick = () => showFirstQuestion();
-            });
-        }
-
-        function goMusic() {
-            choicesIntro.style.opacity = "0";
-            asciiIntro.textContent = intro2;
-            typeIntro(typingBoxIntro, "GOT IT!", () => {
-                sessionStorage.setItem('visited', 'true');
-                setTimeout(() => {
-                    overlay.style.opacity = "0";
-                    setTimeout(() => {
-                        overlay.style.display = "none";
-                        startMainSite();
-                    }, 800);
-                }, 1000);
-            });
-        }
-
-        function startMainSite() {
-            mainSite.style.display = "block";
-            setTimeout(() => {
-                mainSite.style.opacity = "1";
-                startTyping();
-                triggerAsciiAnimation();
-            }, 100);
-        }
-
-        // КРАТКАЯ ЛОГИКА ТВОЕГО ОРИГИНАЛЬНОГО JS
         const typingContainer = document.getElementById('typing-container');
         const asciiArt = document.getElementById('ascii-art');
         const textToType = "Est. 2018 - ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????";
         
+        let isTyped = false; 
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                
+                setTimeout(() => {
+                    if(!isTyped) startTyping();
+                    triggerAsciiAnimation(); 
+                }, 500);
+            }, 2000);
+        });
+
         function startTyping() {
-            let i = 0; typingContainer.textContent = '';
-            function typeNext() { if (i < textToType.length) { typingContainer.textContent += textToType[i]; i++; setTimeout(typeNext, 10); } }
+            let typeIndex = 0;
+            isTyped = true;
+            typingContainer.textContent = '';
+            
+            function typeNext() {
+                if (typeIndex < textToType.length) {
+                    typingContainer.textContent += textToType.charAt(typeIndex);
+                    typeIndex++;
+                    setTimeout(typeNext, 10); 
+                }
+            }
             typeNext();
         }
 
-        function triggerAsciiAnimation() { asciiArt.classList.add('show-art'); }
-
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => document.body.classList.toggle('dark-mode'));
+        function triggerAsciiAnimation() {
+            asciiArt.classList.remove('show-art');
+            void asciiArt.offsetWidth; 
+            asciiArt.classList.add('show-art');
+        }
 
         const catalogItems = document.querySelectorAll('.catalog-item:not(.special-link)');
         const albumContents = document.querySelectorAll('.album-content');
         const displayArea = document.getElementById('display-area');
         const eventsArea = document.getElementById('events-area');
         const defaultView = document.getElementById('default-view');
+        const logo = document.getElementById('logo-container');
         const btnEvents = document.getElementById('btn-events');
+        
         const audioPlayers = document.querySelectorAll('.audio-player');
+        const trackItems = document.querySelectorAll('.track-item');
+
+        trackItems.forEach(track => {
+            track.addEventListener('click', function() {
+                const parentAlbum = this.closest('.album-content');
+                const audioPlayer = parentAlbum.querySelector('.audio-player');
+                const fileSrc = this.getAttribute('data-src');
+                
+                parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('active', 'playing'));
+                this.classList.add('active');
+                
+                if (audioPlayer.getAttribute('src') !== fileSrc) {
+                    audioPlayer.src = fileSrc;
+                }
+                audioPlayer.volume = 1.0; 
+                audioPlayer.play();
+            });
+        });
+
+        audioPlayers.forEach(player => {
+            const parentAlbum = player.closest('.album-content');
+            let associatedCatalogItem = null;
+
+            if (parentAlbum) {
+                const targetId = parentAlbum.id; 
+                associatedCatalogItem = document.querySelector(`.catalog-item[data-target="${targetId}"]`);
+            }
+
+            player.addEventListener('play', (e) => {
+                audioPlayers.forEach(otherPlayer => {
+                    if (otherPlayer !== e.target) otherPlayer.pause();
+                });
+
+                catalogItems.forEach(item => item.classList.remove('playing'));
+                if (associatedCatalogItem) associatedCatalogItem.classList.add('playing');
+
+                if (parentAlbum) {
+                    let activeTrack = parentAlbum.querySelector('.track-item.active');
+                    if(!activeTrack) {
+                        activeTrack = parentAlbum.querySelector('.track-item');
+                        if(activeTrack) activeTrack.classList.add('active');
+                    }
+                    parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('playing'));
+                    if(activeTrack) activeTrack.classList.add('playing');
+                }
+            });
+
+            player.addEventListener('pause', () => {
+                if (associatedCatalogItem) associatedCatalogItem.classList.remove('playing');
+                if (parentAlbum) {
+                    parentAlbum.querySelectorAll('.track-item').forEach(t => t.classList.remove('playing'));
+                }
+            });
+        });
+
+        function alignContentBlock(item, targetArea) {
+            if(window.innerWidth <= 900) {
+                setTimeout(() => {
+                    targetArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+            if(window.innerWidth > 900) {
+                const rect = item.getBoundingClientRect();
+                let calculatedTop = rect.top;
+                if (calculatedTop + 400 > window.innerHeight - 50) {
+                    calculatedTop = window.innerHeight - 450; 
+                }
+                targetArea.style.top = calculatedTop + 'px';
+            }
+        }
 
         catalogItems.forEach(item => {
-            item.onclick = () => {
-                audioPlayers.forEach(p => p.pause());
-                if(defaultView) defaultView.style.display = 'none';
+            item.addEventListener('click', (e) => {
+                // ПАУЗА ВСЕХ ПЛЕЕРОВ ПРИ ПЕРЕКЛЮЧЕНИИ
+                audioPlayers.forEach(p => { p.pause(); p.currentTime = 0; });
+
+                if (defaultView) defaultView.style.display = 'none';
                 eventsArea.style.display = 'none';
-                albumContents.forEach(c => c.classList.remove('active'));
+                btnEvents.classList.remove('active');
+
                 catalogItems.forEach(i => i.classList.remove('active'));
+                albumContents.forEach(c => c.classList.remove('active'));
+
                 item.classList.add('active');
+                
+                const targetId = item.getAttribute('data-target');
+                const targetAlbum = document.getElementById(targetId);
+                
                 displayArea.style.display = 'block';
-                const target = document.getElementById(item.getAttribute('data-target'));
-                target.classList.add('active');
-                if(item.getAttribute('data-target') === 'album-preview') {
-                    const ap = target.querySelector('.audio-player');
-                    ap.volume = 0.3; ap.play();
+                targetAlbum.classList.add('active');
+
+                // ОСОБАЯ ЛОГИКА ДЛЯ ПРЕВЬЮ
+                if (targetId === 'album-preview') {
+                    const previewAudio = targetAlbum.querySelector('.audio-player');
+                    previewAudio.volume = 0.3; // Тихий звук для эмбиента
+                    previewAudio.play();
                 }
-            };
+
+                alignContentBlock(item, displayArea);
+            });
         });
 
-        document.querySelectorAll('.track-item').forEach(track => {
-            track.onclick = function() {
-                const p = this.closest('.album-content').querySelector('.audio-player');
-                this.parentElement.querySelectorAll('.track-item').forEach(t => t.classList.remove('active', 'playing'));
-                this.classList.add('active', 'playing');
-                p.src = this.getAttribute('data-src');
-                p.play();
-            };
-        });
-
-        btnEvents.onclick = () => {
+        btnEvents.addEventListener('click', (e) => {
             audioPlayers.forEach(p => p.pause());
-            if(defaultView) defaultView.style.display = 'none';
+            if (defaultView) defaultView.style.display = 'none';
             displayArea.style.display = 'none';
+            catalogItems.forEach(i => i.classList.remove('active'));
+            albumContents.forEach(c => c.classList.remove('active'));
             btnEvents.classList.add('active');
             eventsArea.style.display = 'block';
-        };
+            alignContentBlock(btnEvents, eventsArea);
+        });
 
-        document.getElementById('logo-container').onclick = (e) => {
-            e.preventDefault();
+        logo.addEventListener('click', (e) => {
+            e.preventDefault(); 
             audioPlayers.forEach(p => p.pause());
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             displayArea.style.display = 'none';
             eventsArea.style.display = 'none';
             catalogItems.forEach(i => i.classList.remove('active'));
-            if(defaultView) defaultView.style.display = 'flex';
-        };
+            albumContents.forEach(c => c.classList.remove('active'));
+            btnEvents.classList.remove('active');
+            if (defaultView) {
+                defaultView.style.display = 'flex'; 
+                triggerAsciiAnimation(); 
+            }
+        });
     </script>
 </body>
 </html>
